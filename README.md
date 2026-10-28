@@ -39,6 +39,12 @@ Open a pack's page for its available agent tools and usage notes.
 
 The pack appears as its own entry under **Plugins → Installed Plugins**, alongside Agent Connector and the target plugin. Check the pack page for any plugin-specific requirements. An [installation guide for AI agents](INSTALL_FOR_AI_AGENTS.md) gives the full verification workflow for automated installation.
 
+## Update an installed pack
+
+Each pack checks its own published GitHub release. When a newer pack version is available, WordPress shows **Update now** for that pack under **Plugins → Installed Plugins**. To have WordPress install future updates for that pack automatically, choose **Enable auto-updates** in the same row. You can enable this separately for each pack. WordPress performs update checks and installations on its normal schedule.
+
+The updater is included in the pack ZIP. Install an updater-enabled ZIP once on sites that have an older copy of the pack. GitHub releases contain one ZIP per pack, so updating one pack does not update the other nine packs. Make a verified backup before installing an update.
+
 ## Use with an AI agent
 
 Connect your agent through Agent Connector for WP and ask it to discover the tools from the installed pack. Start with a read-only request, for example: “Show me the latest WPvivid backup status and available backup tools. Do not change anything.”

@@ -33,6 +33,8 @@ Each pack is installed as an ordinary, independently activatable WordPress plugi
 
 For an existing installation, compare the current files, back them up, and update the same plugin directory instead of creating a second copy. Use `wp plugin install <zip> --force --activate` only after confirming the slug and backup. The other packs are optional and remain independently installable.
 
+Each updater-enabled pack uses its own GitHub release tag in the form `<pack-slug>-v<version>` and requires an asset named `<pack-slug>-<version>.zip`. The tag version must match the plugin header and `pack.json`. After a pack is first installed with its updater, WordPress offers later published versions through its normal plugin update screen. The site owner can select **Update now** or **Enable auto-updates** for that individual pack. Verify the installed version and read-only ability execution after either update path.
+
 ## 4. Verify registration and behavior
 
 Reconnect the MCP client if it caches its tool list. Discover abilities through Agent Connector and verify the selected namespace, for example `code-snippets/`. Execute `<namespace>/get-status` and one read-only ability. Confirm that the status reports the installed target version and the reviewed source version. Test a write preview with `dry_run: true` only after reading its input schema and revision source.

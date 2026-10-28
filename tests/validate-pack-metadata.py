@@ -41,7 +41,13 @@ for pack in PACKS:
     assert header(source, "Plugin Name") == f"We.Rock.{DISPLAY_NAMES[pack.name]}.Ability.Pack", pack
     assert header(source, "Author") == "wir.rocken.digital", pack
     assert header(source, "Author URI") == "https://wir.rocken.digital", pack
-    assert manifest["version"] == header(source, "Version") == "0.1.0", pack
+    assert re.fullmatch(r"\d+\.\d+\.\d+", manifest["version"]), pack
+    assert manifest["version"] == header(source, "Version"), pack
+    assert header(source, "Update URI") == (
+        "https://github.com/wirrockendigital/We.Rock.WP.Ability.Packs/releases?q=" + manifest["slug"]
+    ), pack
+    assert (pack / "includes/github-updater.php").is_file(), pack
+    assert "AbilityPackUpdater\\Updater::register(__FILE__, '" + manifest["slug"] + "')" in source, pack
     assert manifest["target_plugin"] == header(source, "Agent Connector Target"), pack
     assert manifest["tested_target_plugin_version"] == header(source, "Tested Target Plugin Version"), pack
     assert manifest["license"] == header(source, "License") == "GPL-3.0-or-later", pack

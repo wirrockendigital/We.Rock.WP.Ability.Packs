@@ -34,6 +34,7 @@ def main() -> None:
         parser.error("exactly one WordPress plugin entry point is required")
     files = main_files + [pack / "pack.json", pack / "README.md", pack / "LICENSE"]
     files += sorted((pack / "src").rglob("*.php"))
+    files += sorted((pack / "includes").rglob("*.php"))
     files += sorted((pack / "abilities").rglob("*.php"))
     if (pack / "bootstrap.php").is_file():
         files.append(pack / "bootstrap.php")

@@ -22,6 +22,8 @@ jobs:
           find . -type f -name '*.php' -print0 | xargs -0 -n1 php -l >/dev/null
           python3 tests/validate-pack-metadata.py
           python3 tests/validate-packages.py
+          python3 tests/validate-release-tags.py
+          php tests/github-updater.php
       - name: Run compatibility and behavior checks
         run: |
           python3 tests/validate-compatibility.py

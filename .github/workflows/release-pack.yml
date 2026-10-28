@@ -1,0 +1,46 @@
+name: Release one ability pack
+
+on:
+  push:
+    tags:
+      - '*-v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - name: Set up validation dependencies
+        run: |
+          python3 -m venv .venv
+          .venv/bin/pip install -r requirements-dev.txt
+      - name: Validate all packs
+        run: |
+          find . -type f -name '*.php' -print0 | xargs -0 -n1 php -l >/dev/null
+          python3 tests/validate-pack-metadata.py
+          python3 tests/validate-packages.py
+          python3 tests/validate-release-tags.py
+          python3 tests/validate-compatibility.py
+          php tests/github-updater.php
+          php wrd-ninjafirewall-ability-pack/tests/behavior.php
+          .venv/bin/python wrd-code-snippets-ability-pack/tests/validate.py
+          .venv/bin/python wrd-real-cookie-banner-ability-pack/tests/validate.py
+          .venv/bin/python wrd-real-media-library-ability-pack/tests/validate.py
+          .venv/bin/python wrd-polylang-ability-pack/tests/validate.py
+          .venv/bin/python wrd-real-category-management-ability-pack/tests/validate.py
+          .venv/bin/python wrd-wpvivid-ability-pack/tests/validate.py
+      - name: Package tagged pack
+        id: pack
+        run: |
+          pack=$(python3 scripts/verify_release_tag.py "$GITHUB_REF_NAME")
+          python3 scripts/package_pack.py "$pack"
+          slug=$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["slug"])' "$pack/pack.json")
+          version=$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["version"])' "$pack/pack.json")
+          echo "archive=dist/$slug-$version.zip" >> "$GITHUB_OUTPUT"
+      - name: Publish the installable ZIP
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" "${{ steps.pack.outputs.archive }}" --title "$GITHUB_REF_NAME" --generate-notes --verify-tag

@@ -3,6 +3,7 @@
  * Plugin Name: We.Rock.WPvividStaging.Ability.Pack
  * Description: WPvivid staging diagnostics and scoped administration through Agent Connector for WP.
  * Version: 0.1.0
+ * Update URI: https://github.com/wirrockendigital/We.Rock.WP.Ability.Packs/releases?q=wrd-wpvivid-staging-ability-pack
  * Tested Target Plugin Version: 2.0.25
  * Requires at least: 7.0
  * Requires PHP: 8.1
@@ -16,6 +17,9 @@
 declare(strict_types=1);
 namespace WeRock\WPvividStagingAbilities;
 defined('ABSPATH') || exit;
+// Register this pack with WordPress core plugin updates.
+require_once __DIR__ . '/includes/github-updater.php';
+\WeRock\AbilityPackUpdater\Updater::register(__FILE__, 'wrd-wpvivid-staging-ability-pack');
 
 // Each companion is independently installable without a shared loader plugin.
 require_once __DIR__ . '/src/Runtime.php';
