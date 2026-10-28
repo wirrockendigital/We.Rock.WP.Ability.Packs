@@ -1,0 +1,34 @@
+name: Validate ability packs
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - name: Set up local validation dependencies
+        run: |
+          python3 -m venv .venv
+          .venv/bin/pip install -r requirements-dev.txt
+          php -v
+      - name: Check PHP syntax and pack metadata
+        run: |
+          find . -type f -name '*.php' -print0 | xargs -0 -n1 php -l >/dev/null
+          python3 tests/validate-pack-metadata.py
+          python3 tests/validate-packages.py
+      - name: Run compatibility and behavior checks
+        run: |
+          python3 tests/validate-compatibility.py
+          php wrd-ninjafirewall-ability-pack/tests/behavior.php
+          .venv/bin/python wrd-code-snippets-ability-pack/tests/validate.py
+          .venv/bin/python wrd-real-cookie-banner-ability-pack/tests/validate.py
+          .venv/bin/python wrd-real-media-library-ability-pack/tests/validate.py
+          .venv/bin/python wrd-polylang-ability-pack/tests/validate.py
+          .venv/bin/python wrd-real-category-management-ability-pack/tests/validate.py
+          .venv/bin/python wrd-wpvivid-ability-pack/tests/validate.py

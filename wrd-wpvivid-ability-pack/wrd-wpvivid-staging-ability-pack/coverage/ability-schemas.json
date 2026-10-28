@@ -1,0 +1,335 @@
+{
+  "wpvivid-staging/get-status": {
+    "label": "Inspect target status",
+    "description": "Read target identity, reviewed version, multisite and cron state. Does not initialize target defaults.",
+    "category": "wpvivid-staging",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "required": [
+        "result"
+      ],
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": true,
+      "destructive": false,
+      "idempotent": true
+    }
+  },
+  "wpvivid-staging/get-settings": {
+    "label": "Read supported settings",
+    "description": "Read stored supported settings and a revision over the complete native option. Missing fields are listed; no defaults are persisted.",
+    "category": "wpvivid-staging",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "required": [
+        "result"
+      ],
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": true,
+      "destructive": false,
+      "idempotent": true
+    }
+  },
+  "wpvivid-staging/get-settings-schema": {
+    "label": "Discover writable settings",
+    "description": "Return exact types and limits accepted by update-settings.",
+    "category": "wpvivid-staging",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "required": [
+        "result"
+      ],
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": true,
+      "destructive": false,
+      "idempotent": true
+    }
+  },
+  "wpvivid-staging/update-settings": {
+    "label": "Patch supported settings",
+    "description": "Preview a minimal settings delta. Explicit dry_run false writes only this site using a revision check and InnoDB row lock. Unknown and credential-bearing settings are rejected. Only this site and its future staging jobs. Existing child sites are not synchronized.",
+    "category": "wpvivid-staging",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "expected_revision": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "Revision from a fresh get-settings response."
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 300,
+          "description": "Operator rationale; never include secrets. Not written to the audit summary."
+        },
+        "dry_run": {
+          "type": "boolean",
+          "default": true,
+          "description": "Preview unless explicitly false."
+        },
+        "changes": {
+          "type": "object",
+          "properties": {
+            "staging_db_insert_count": {
+              "type": "integer",
+              "description": "Database insert batch size.",
+              "minimum": 100,
+              "maximum": 50000
+            },
+            "staging_db_replace_count": {
+              "type": "integer",
+              "description": "Database replacement batch size.",
+              "minimum": 100,
+              "maximum": 50000
+            },
+            "staging_file_copy_count": {
+              "type": "integer",
+              "description": "Files copied per batch.",
+              "minimum": 10,
+              "maximum": 5000
+            },
+            "staging_max_execution_time": {
+              "type": "integer",
+              "description": "Maximum batch execution time in seconds.",
+              "minimum": 30,
+              "maximum": 900
+            },
+            "staging_resume_count": {
+              "type": "integer",
+              "description": "Maximum retries per staging job.",
+              "minimum": 0,
+              "maximum": 12
+            },
+            "staging_request_timeout": {
+              "type": "integer",
+              "description": "Delay between requests in milliseconds.",
+              "minimum": 500,
+              "maximum": 10000
+            }
+          },
+          "minProperties": 1,
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "expected_revision",
+        "reason",
+        "changes"
+      ],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "required": [
+        "result"
+      ],
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": false,
+      "destructive": true,
+      "idempotent": true
+    }
+  },
+  "wpvivid-staging/list-cron-events": {
+    "label": "Inspect WPvivid cron events",
+    "description": "List shared WPvivid cron timestamps without arguments or executing callbacks.",
+    "category": "wpvivid-staging",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100,
+          "default": 25,
+          "description": "Maximum returned records."
+        },
+        "offset": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000,
+          "default": 0,
+          "description": "Records skipped in deterministic order."
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "required": [
+        "result"
+      ],
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": true,
+      "destructive": false,
+      "idempotent": true
+    }
+  },
+  "wpvivid-staging/list-sites": {
+    "label": "List staging sites",
+    "description": "Read staging catalog IDs, creation times and flags. Does not reveal login URLs, database credentials or filesystem paths.",
+    "category": "wpvivid-staging",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100,
+          "default": 25,
+          "description": "Maximum returned records."
+        },
+        "offset": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000,
+          "default": 0,
+          "description": "Records skipped in deterministic order."
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "required": [
+        "result"
+      ],
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": true,
+      "destructive": false,
+      "idempotent": true
+    }
+  },
+  "wpvivid-staging/list-tasks": {
+    "label": "Inspect staging tasks",
+    "description": "Read native create, copy and push job metadata without starting, cancelling or resuming jobs.",
+    "category": "wpvivid-staging",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100,
+          "default": 25,
+          "description": "Maximum returned records."
+        },
+        "offset": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000,
+          "default": 0,
+          "description": "Records skipped in deterministic order."
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "required": [
+        "result"
+      ],
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": true,
+      "destructive": false,
+      "idempotent": true
+    }
+  },
+  "wpvivid-staging/get-access-settings": {
+    "label": "Read staging access defaults",
+    "description": "Read stored login and push-display defaults. Does not test or change the access controls of existing child sites.",
+    "category": "wpvivid-staging",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "required": [
+        "result"
+      ],
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": true,
+      "destructive": false,
+      "idempotent": true
+    }
+  }
+}

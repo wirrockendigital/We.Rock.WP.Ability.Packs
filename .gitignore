@@ -1,0 +1,15 @@
+/dist/
+/.venv/
+/**/INSTALLATION.md
+/**/VERIFICATION.md
+/**/UPDATE-*.md
+/**/installation-hashes-*.json
+/**/source-cross-check.json
+/**/coverage/coverage-report.md
+/**/coverage/inventory.json
+/**/coverage/inventory.schema.json
+/**/coverage/verification.json
+/**/coverage/mcp-acceptance.json
+/**/coverage/source-cross-check.json
+/**/coverage/source-sha256.json
+/**/coverage/source-surface-index.json

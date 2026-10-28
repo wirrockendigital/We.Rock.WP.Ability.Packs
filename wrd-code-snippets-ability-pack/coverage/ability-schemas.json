@@ -1,0 +1,575 @@
+{
+  "code-snippets/get-status": {
+    "label": "Get Status",
+    "description": "Read reviewed target availability and supported scopes.",
+    "category": "code-snippets",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": true,
+      "destructive": false,
+      "idempotent": true
+    }
+  },
+  "code-snippets/list-snippets": {
+    "label": "List Snippets",
+    "description": "List metadata without code; includes catalog revision for creation.",
+    "category": "code-snippets",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "offset": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": true,
+      "destructive": false,
+      "idempotent": true
+    }
+  },
+  "code-snippets/get-snippet": {
+    "label": "Get Snippet",
+    "description": "Read metadata and revision. include_code explicitly returns unredacted code and description to the authorized caller.",
+    "category": "code-snippets",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "include_code": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": true,
+      "destructive": false,
+      "idempotent": true
+    }
+  },
+  "code-snippets/validate-code": {
+    "label": "Validate Code",
+    "description": "Parse PHP and run native identifier checks without executing code. Does not prove runtime safety; HTML/CSS/JavaScript require separate review.",
+    "category": "code-snippets",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "maxLength": 100000
+        },
+        "scope": {
+          "type": "string",
+          "enum": [
+            "global",
+            "admin",
+            "front-end",
+            "content",
+            "head-content",
+            "body-content",
+            "footer-content",
+            "admin-css",
+            "site-css",
+            "site-head-js",
+            "site-footer-js"
+          ]
+        }
+      },
+      "required": [
+        "code",
+        "scope"
+      ],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": true,
+      "destructive": false,
+      "idempotent": true
+    }
+  },
+  "code-snippets/create-snippet": {
+    "label": "Create Snippet",
+    "description": "Create an inactive local snippet. Preview by default. Uses a fresh catalog revision to reject stale retries.",
+    "category": "code-snippets",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "expected_revision": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "Fresh snippet revision, or catalog_revision for creation. Re-read after any uncertain outcome."
+        },
+        "dry_run": {
+          "type": "boolean",
+          "default": true
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 300
+        },
+        "changes": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "description": {
+              "type": "string",
+              "maxLength": 10000
+            },
+            "code": {
+              "type": "string",
+              "maxLength": 100000
+            },
+            "scope": {
+              "type": "string",
+              "enum": [
+                "global",
+                "admin",
+                "front-end",
+                "content",
+                "head-content",
+                "body-content",
+                "footer-content",
+                "admin-css",
+                "site-css",
+                "site-head-js",
+                "site-footer-js"
+              ]
+            },
+            "priority": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 999
+            },
+            "tags": {
+              "type": "array",
+              "maxItems": 30,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              }
+            }
+          },
+          "required": [
+            "name",
+            "code",
+            "scope"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "expected_revision",
+        "reason",
+        "changes"
+      ],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": false,
+      "destructive": true,
+      "idempotent": false
+    }
+  },
+  "code-snippets/update-snippet": {
+    "label": "Update Snippet",
+    "description": "Patch an inactive local snippet. Preserves other fields and requires a fresh revision.",
+    "category": "code-snippets",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "expected_revision": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "Fresh snippet revision, or catalog_revision for creation. Re-read after any uncertain outcome."
+        },
+        "dry_run": {
+          "type": "boolean",
+          "default": true
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 300
+        },
+        "id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "changes": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "description": {
+              "type": "string",
+              "maxLength": 10000
+            },
+            "code": {
+              "type": "string",
+              "maxLength": 100000
+            },
+            "scope": {
+              "type": "string",
+              "enum": [
+                "global",
+                "admin",
+                "front-end",
+                "content",
+                "head-content",
+                "body-content",
+                "footer-content",
+                "admin-css",
+                "site-css",
+                "site-head-js",
+                "site-footer-js"
+              ]
+            },
+            "priority": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 999
+            },
+            "tags": {
+              "type": "array",
+              "maxItems": 30,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              }
+            }
+          },
+          "required": [],
+          "additionalProperties": false,
+          "minProperties": 1
+        }
+      },
+      "required": [
+        "id",
+        "expected_revision",
+        "reason",
+        "changes"
+      ],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": false,
+      "destructive": true,
+      "idempotent": true
+    }
+  },
+  "code-snippets/activate-snippet": {
+    "label": "Activate Snippet",
+    "description": "Activate a local snippet with revision checking. Preview by default; trash requires inactive state. Restore leaves the snippet inactive.",
+    "category": "code-snippets",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "expected_revision": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "Fresh snippet revision, or catalog_revision for creation. Re-read after any uncertain outcome."
+        },
+        "dry_run": {
+          "type": "boolean",
+          "default": true
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 300
+        },
+        "id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "acknowledge_execution": {
+          "type": "boolean",
+          "default": false,
+          "description": "Explicitly acknowledge that activation enables code execution on subsequent requests and native hooks."
+        }
+      },
+      "required": [
+        "id",
+        "expected_revision",
+        "reason"
+      ],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": false,
+      "destructive": true,
+      "idempotent": true
+    }
+  },
+  "code-snippets/deactivate-snippet": {
+    "label": "Deactivate Snippet",
+    "description": "Deactivate a local snippet with revision checking. Preview by default; trash requires inactive state. Restore leaves the snippet inactive.",
+    "category": "code-snippets",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "expected_revision": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "Fresh snippet revision, or catalog_revision for creation. Re-read after any uncertain outcome."
+        },
+        "dry_run": {
+          "type": "boolean",
+          "default": true
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 300
+        },
+        "id": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "id",
+        "expected_revision",
+        "reason"
+      ],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": false,
+      "destructive": true,
+      "idempotent": true
+    }
+  },
+  "code-snippets/trash-snippet": {
+    "label": "Trash Snippet",
+    "description": "Trash a local snippet with revision checking. Preview by default; trash requires inactive state. Restore leaves the snippet inactive.",
+    "category": "code-snippets",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "expected_revision": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "Fresh snippet revision, or catalog_revision for creation. Re-read after any uncertain outcome."
+        },
+        "dry_run": {
+          "type": "boolean",
+          "default": true
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 300
+        },
+        "id": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "id",
+        "expected_revision",
+        "reason"
+      ],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": false,
+      "destructive": true,
+      "idempotent": true
+    }
+  },
+  "code-snippets/restore-snippet": {
+    "label": "Restore Snippet",
+    "description": "Restore a local snippet with revision checking. Preview by default; trash requires inactive state. Restore leaves the snippet inactive.",
+    "category": "code-snippets",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "expected_revision": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "Fresh snippet revision, or catalog_revision for creation. Re-read after any uncertain outcome."
+        },
+        "dry_run": {
+          "type": "boolean",
+          "default": true
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 300
+        },
+        "id": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "id",
+        "expected_revision",
+        "reason"
+      ],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": false,
+      "destructive": true,
+      "idempotent": true
+    }
+  }
+}

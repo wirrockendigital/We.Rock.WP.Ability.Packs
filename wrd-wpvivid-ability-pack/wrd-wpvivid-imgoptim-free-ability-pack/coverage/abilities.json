@@ -1,0 +1,47 @@
+[
+  {
+    "name": "wpvivid-imgoptim-free/get-status",
+    "method": "status",
+    "schema": "empty"
+  },
+  {
+    "name": "wpvivid-imgoptim-free/get-settings",
+    "method": "settings",
+    "schema": "empty"
+  },
+  {
+    "name": "wpvivid-imgoptim-free/get-settings-schema",
+    "method": "settingsSchema",
+    "schema": "empty"
+  },
+  {
+    "name": "wpvivid-imgoptim-free/update-settings",
+    "method": "updateSettings",
+    "schema": "write"
+  },
+  {
+    "name": "wpvivid-imgoptim-free/list-cron-events",
+    "method": "cron",
+    "schema": "page"
+  },
+  {
+    "name": "wpvivid-imgoptim-free/get-task",
+    "method": "task",
+    "schema": "empty"
+  },
+  {
+    "name": "wpvivid-imgoptim-free/get-lazyload",
+    "method": "lazyload",
+    "schema": "empty"
+  },
+  {
+    "name": "wpvivid-imgoptim-free/get-image-status",
+    "method": "image",
+    "schema": "image"
+  },
+  {
+    "name": "wpvivid-imgoptim-free/list-image-sizes",
+    "method": "sizes",
+    "schema": "page"
+  }
+]

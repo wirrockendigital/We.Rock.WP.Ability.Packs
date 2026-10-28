@@ -1,0 +1,340 @@
+{
+  "wpvivid-imgoptim-free/get-status": {
+    "label": "Inspect target status",
+    "description": "Read target identity, reviewed version, multisite and cron state. Does not initialize target defaults.",
+    "category": "wpvivid-imgoptim-free",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "required": [
+        "result"
+      ],
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": true,
+      "destructive": false,
+      "idempotent": true
+    }
+  },
+  "wpvivid-imgoptim-free/get-settings": {
+    "label": "Read supported settings",
+    "description": "Read stored supported settings and a revision over the complete native option. Missing fields are listed; no defaults are persisted.",
+    "category": "wpvivid-imgoptim-free",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "required": [
+        "result"
+      ],
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": true,
+      "destructive": false,
+      "idempotent": true
+    }
+  },
+  "wpvivid-imgoptim-free/get-settings-schema": {
+    "label": "Discover writable settings",
+    "description": "Return exact types and limits accepted by update-settings.",
+    "category": "wpvivid-imgoptim-free",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "required": [
+        "result"
+      ],
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": true,
+      "destructive": false,
+      "idempotent": true
+    }
+  },
+  "wpvivid-imgoptim-free/update-settings": {
+    "label": "Patch supported settings",
+    "description": "Preview a minimal settings delta. Explicit dry_run false writes only this site using a revision check and InnoDB row lock. Unknown and credential-bearing settings are rejected. Current site optimization settings for future work; saving does not optimize existing images.",
+    "category": "wpvivid-imgoptim-free",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "expected_revision": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "Revision from a fresh get-settings response."
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 300,
+          "description": "Operator rationale; never include secrets. Not written to the audit summary."
+        },
+        "dry_run": {
+          "type": "boolean",
+          "default": true,
+          "description": "Preview unless explicitly false."
+        },
+        "changes": {
+          "type": "object",
+          "properties": {
+            "quality": {
+              "type": "string",
+              "description": "Compression mode used for future optimization.",
+              "enum": [
+                "lossless",
+                "lossy"
+              ]
+            },
+            "keep_exif": {
+              "type": "boolean",
+              "description": "Keep EXIF metadata during future image optimization."
+            },
+            "backup": {
+              "type": "boolean",
+              "description": "Keep original image backups during future optimization."
+            },
+            "only_resize": {
+              "type": "boolean",
+              "description": "Resize images without compression during future operations."
+            }
+          },
+          "minProperties": 1,
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "expected_revision",
+        "reason",
+        "changes"
+      ],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "required": [
+        "result"
+      ],
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": false,
+      "destructive": true,
+      "idempotent": true
+    }
+  },
+  "wpvivid-imgoptim-free/list-cron-events": {
+    "label": "Inspect WPvivid cron events",
+    "description": "List shared WPvivid cron timestamps without arguments or executing callbacks.",
+    "category": "wpvivid-imgoptim-free",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100,
+          "default": 25,
+          "description": "Maximum returned records."
+        },
+        "offset": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000,
+          "default": 0,
+          "description": "Records skipped in deterministic order."
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "required": [
+        "result"
+      ],
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": true,
+      "destructive": false,
+      "idempotent": true
+    }
+  },
+  "wpvivid-imgoptim-free/get-task": {
+    "label": "Inspect image optimization task",
+    "description": "Read native image task status and counts without optimizing images or contacting WPvivid servers.",
+    "category": "wpvivid-imgoptim-free",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "required": [
+        "result"
+      ],
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": true,
+      "destructive": false,
+      "idempotent": true
+    }
+  },
+  "wpvivid-imgoptim-free/get-lazyload": {
+    "label": "Read lazyload settings",
+    "description": "Read stored lazyload booleans without changing frontend behavior.",
+    "category": "wpvivid-imgoptim-free",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "required": [
+        "result"
+      ],
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": true,
+      "destructive": false,
+      "idempotent": true
+    }
+  },
+  "wpvivid-imgoptim-free/get-image-status": {
+    "label": "Inspect image optimization metadata",
+    "description": "Read native optimization flags for one image attachment. Metadata does not prove the existence of original backups.",
+    "category": "wpvivid-imgoptim-free",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "attachment_id": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "An existing WordPress image attachment ID."
+        }
+      },
+      "required": [
+        "attachment_id"
+      ],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "required": [
+        "result"
+      ],
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": true,
+      "destructive": false,
+      "idempotent": true
+    }
+  },
+  "wpvivid-imgoptim-free/list-image-sizes": {
+    "label": "List registered image sizes",
+    "description": "Read WordPress image size names and dimensions for planning optimization.",
+    "category": "wpvivid-imgoptim-free",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100,
+          "default": 25,
+          "description": "Maximum returned records."
+        },
+        "offset": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000,
+          "default": 0,
+          "description": "Records skipped in deterministic order."
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "required": [
+        "result"
+      ],
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": true,
+      "destructive": false,
+      "idempotent": true
+    }
+  }
+}

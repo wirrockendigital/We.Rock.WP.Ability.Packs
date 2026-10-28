@@ -1,0 +1,2 @@
+# Local schema validation for the pack contracts.
+jsonschema>=4,<5

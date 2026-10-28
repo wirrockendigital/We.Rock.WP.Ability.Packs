@@ -1,0 +1,12 @@
+[
+  "real-cookie-banner/get-status",
+  "real-cookie-banner/get-settings",
+  "real-cookie-banner/list-groups",
+  "real-cookie-banner/list-items",
+  "real-cookie-banner/get-item",
+  "real-cookie-banner/get-edit-schema",
+  "real-cookie-banner/create-draft",
+  "real-cookie-banner/update-draft",
+  "real-cookie-banner/trash-draft",
+  "real-cookie-banner/restore-draft"
+]

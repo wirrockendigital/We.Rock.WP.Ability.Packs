@@ -1,0 +1,47 @@
+[
+  {
+    "name": "wpvivid-backup/get-status",
+    "method": "status",
+    "schema": "empty"
+  },
+  {
+    "name": "wpvivid-backup/get-settings",
+    "method": "settings",
+    "schema": "empty"
+  },
+  {
+    "name": "wpvivid-backup/get-settings-schema",
+    "method": "settingsSchema",
+    "schema": "empty"
+  },
+  {
+    "name": "wpvivid-backup/update-settings",
+    "method": "updateSettings",
+    "schema": "write"
+  },
+  {
+    "name": "wpvivid-backup/list-cron-events",
+    "method": "cron",
+    "schema": "page"
+  },
+  {
+    "name": "wpvivid-backup/list-backups",
+    "method": "backups",
+    "schema": "page"
+  },
+  {
+    "name": "wpvivid-backup/list-tasks",
+    "method": "tasks",
+    "schema": "page"
+  },
+  {
+    "name": "wpvivid-backup/list-remote-storage",
+    "method": "remotes",
+    "schema": "page"
+  },
+  {
+    "name": "wpvivid-backup/start-local-backup",
+    "method": "startBackup",
+    "schema": "backup"
+  }
+]

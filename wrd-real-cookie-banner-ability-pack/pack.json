@@ -1,0 +1,8 @@
+{
+  "slug": "wrd-real-cookie-banner-ability-pack",
+  "version": "0.1.0",
+  "target_plugin": "real-cookie-banner/index.php",
+  "tested_target_plugin_version": "5.3.0",
+  "requires_plugin": "agent-connector-for-wp",
+  "license": "GPL-3.0-or-later"
+}

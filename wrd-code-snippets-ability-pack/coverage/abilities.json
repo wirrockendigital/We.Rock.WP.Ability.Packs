@@ -1,0 +1,12 @@
+[
+  "code-snippets/get-status",
+  "code-snippets/list-snippets",
+  "code-snippets/get-snippet",
+  "code-snippets/validate-code",
+  "code-snippets/create-snippet",
+  "code-snippets/update-snippet",
+  "code-snippets/activate-snippet",
+  "code-snippets/deactivate-snippet",
+  "code-snippets/trash-snippet",
+  "code-snippets/restore-snippet"
+]

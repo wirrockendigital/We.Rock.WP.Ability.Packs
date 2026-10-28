@@ -1,0 +1,414 @@
+{
+  "real-media-library/get-status": {
+    "label": "Get Status",
+    "category": "real-media-library",
+    "description": "Read target version, native edition and support.",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": true,
+      "destructive": false,
+      "idempotent": true
+    }
+  },
+  "real-media-library/list-folders": {
+    "label": "List Folders",
+    "category": "real-media-library",
+    "description": "Read paged folder hierarchy metadata and whole-library revision.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "offset": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": true,
+      "destructive": false,
+      "idempotent": true
+    }
+  },
+  "real-media-library/get-folder": {
+    "label": "Get Folder",
+    "category": "real-media-library",
+    "description": "Read a folder and whole-library revision.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "folder_id": {
+          "type": "integer",
+          "minimum": -1,
+          "not": {
+            "enum": [
+              0
+            ]
+          },
+          "description": "Native folder ID; -1 is unorganized/root."
+        }
+      },
+      "required": [
+        "folder_id"
+      ],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": true,
+      "destructive": false,
+      "idempotent": true
+    }
+  },
+  "real-media-library/list-attachments": {
+    "label": "List Attachments",
+    "category": "real-media-library",
+    "description": "Read original media IDs, titles and MIME types in a folder, excluding shortcuts and file URLs.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "folder_id": {
+          "type": "integer",
+          "minimum": -1,
+          "not": {
+            "enum": [
+              0
+            ]
+          },
+          "description": "Native folder ID; -1 is unorganized/root."
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "offset": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000
+        }
+      },
+      "required": [
+        "folder_id"
+      ],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": true,
+      "destructive": false,
+      "idempotent": true
+    }
+  },
+  "real-media-library/create-folder": {
+    "label": "Create Folder",
+    "category": "real-media-library",
+    "description": "Create a regular virtual folder. Subfolders require Pro. Preview checks structural constraints; native hooks run on execution.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "expected_revision": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "Fresh whole-library revision from a read; re-read after any uncertain outcome."
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 300
+        },
+        "dry_run": {
+          "type": "boolean",
+          "default": true
+        },
+        "parent_id": {
+          "type": "integer",
+          "minimum": -1,
+          "not": {
+            "enum": [
+              0
+            ]
+          },
+          "description": "Native folder ID; -1 is unorganized/root."
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "pattern": "^[^/\\\\\\x00-\\x1f]+$"
+        }
+      },
+      "required": [
+        "expected_revision",
+        "reason",
+        "parent_id",
+        "name"
+      ],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": false,
+      "destructive": true,
+      "idempotent": false
+    }
+  },
+  "real-media-library/rename-folder": {
+    "label": "Rename Folder",
+    "category": "real-media-library",
+    "description": "Rename a regular virtual folder through the vendor API. Preview by default.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "expected_revision": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "Fresh whole-library revision from a read; re-read after any uncertain outcome."
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 300
+        },
+        "dry_run": {
+          "type": "boolean",
+          "default": true
+        },
+        "folder_id": {
+          "type": "integer",
+          "minimum": -1,
+          "not": {
+            "enum": [
+              0
+            ]
+          },
+          "description": "Native folder ID; -1 is unorganized/root."
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "pattern": "^[^/\\\\\\x00-\\x1f]+$"
+        }
+      },
+      "required": [
+        "expected_revision",
+        "reason",
+        "folder_id",
+        "name"
+      ],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": false,
+      "destructive": true,
+      "idempotent": true
+    }
+  },
+  "real-media-library/move-attachments": {
+    "label": "Move Attachments",
+    "category": "real-media-library",
+    "description": "Move up to 50 existing original media assignments into a regular folder or unorganized root. Native validation remains enabled; disk paths and URLs are unchanged by this pack.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "expected_revision": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "Fresh whole-library revision from a read; re-read after any uncertain outcome."
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 300
+        },
+        "dry_run": {
+          "type": "boolean",
+          "default": true
+        },
+        "folder_id": {
+          "type": "integer",
+          "minimum": -1,
+          "not": {
+            "enum": [
+              0
+            ]
+          },
+          "description": "Native folder ID; -1 is unorganized/root."
+        },
+        "attachment_ids": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 50,
+          "uniqueItems": true,
+          "items": {
+            "type": "integer",
+            "minimum": 1
+          }
+        }
+      },
+      "required": [
+        "expected_revision",
+        "reason",
+        "folder_id",
+        "attachment_ids"
+      ],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": false,
+      "destructive": true,
+      "idempotent": true
+    }
+  },
+  "real-media-library/delete-empty-folder": {
+    "label": "Delete Empty Folder",
+    "category": "real-media-library",
+    "description": "Permanently remove only an empty regular virtual folder, never media files. Rejects children, original assignments and shortcuts.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "expected_revision": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "Fresh whole-library revision from a read; re-read after any uncertain outcome."
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 300
+        },
+        "dry_run": {
+          "type": "boolean",
+          "default": true
+        },
+        "folder_id": {
+          "type": "integer",
+          "minimum": -1,
+          "not": {
+            "enum": [
+              0
+            ]
+          },
+          "description": "Native folder ID; -1 is unorganized/root."
+        }
+      },
+      "required": [
+        "expected_revision",
+        "reason",
+        "folder_id"
+      ],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": false,
+      "destructive": true,
+      "idempotent": true
+    }
+  }
+}

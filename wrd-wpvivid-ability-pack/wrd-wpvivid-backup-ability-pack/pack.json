@@ -1,0 +1,8 @@
+{
+  "slug": "wrd-wpvivid-backup-ability-pack",
+  "version": "0.1.0",
+  "target_plugin": "wpvivid-backuprestore/wpvivid-backuprestore.php",
+  "tested_target_plugin_version": "0.9.136",
+  "requires_plugin": "agent-connector-for-wp",
+  "license": "GPL-3.0-or-later"
+}

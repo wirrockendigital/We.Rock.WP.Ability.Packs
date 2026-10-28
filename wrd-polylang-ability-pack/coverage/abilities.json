@@ -1,0 +1,772 @@
+{
+  "polylang/get-status": {
+    "name": "polylang/get-status",
+    "label": "Get Status",
+    "description": "Read Polylang edition, informative source version and per-operation native availability.",
+    "category": "polylang",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": true,
+      "destructive": false,
+      "idempotent": true
+    }
+  },
+  "polylang/list-languages": {
+    "name": "polylang/list-languages",
+    "label": "List Languages",
+    "description": "Read all configured languages and configuration revision.",
+    "category": "polylang",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": true,
+      "destructive": false,
+      "idempotent": true
+    }
+  },
+  "polylang/create-language": {
+    "name": "polylang/create-language",
+    "label": "Create Language",
+    "description": "Add a language through the native controller. Does not create a default category. The first language becomes default. Preview checks schema and uniqueness; lifecycle hooks run only on execution.",
+    "category": "polylang",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "expected_revision": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 300
+        },
+        "dry_run": {
+          "type": "boolean",
+          "default": true
+        },
+        "locale": {
+          "type": "string",
+          "pattern": "^[a-z]{2,3}(?:_[A-Za-z0-9]+)*$",
+          "maxLength": 40
+        },
+        "slug": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_-]*$",
+          "maxLength": 32
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "is_rtl": {
+          "type": "boolean"
+        },
+        "term_group": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "flag_code": {
+          "type": "string",
+          "pattern": "^[a-z0-9_-]{2,30}$"
+        }
+      },
+      "required": [
+        "expected_revision",
+        "reason",
+        "locale",
+        "slug",
+        "name",
+        "is_rtl"
+      ],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": false,
+      "destructive": true,
+      "idempotent": false
+    }
+  },
+  "polylang/update-language": {
+    "name": "polylang/update-language",
+    "label": "Update Language",
+    "description": "Change display name, direction, order or flag of a language. Supply only changed fields; slug and locale migrations are excluded.",
+    "category": "polylang",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "expected_revision": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 300
+        },
+        "dry_run": {
+          "type": "boolean",
+          "default": true
+        },
+        "language": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_-]*$",
+          "maxLength": 32
+        },
+        "changes": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            "is_rtl": {
+              "type": "boolean"
+            },
+            "term_group": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000
+            },
+            "flag_code": {
+              "type": "string",
+              "pattern": "^[a-z0-9_-]{2,30}$"
+            }
+          },
+          "required": [],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "expected_revision",
+        "reason",
+        "language",
+        "changes"
+      ],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": false,
+      "destructive": true,
+      "idempotent": true
+    }
+  },
+  "polylang/get-settings": {
+    "name": "polylang/get-settings",
+    "label": "Get Settings",
+    "description": "Read native settings and writable schemas, configured and available content types, plus configuration revision.",
+    "category": "polylang",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": true,
+      "destructive": false,
+      "idempotent": true
+    }
+  },
+  "polylang/update-setting": {
+    "name": "polylang/update-setting",
+    "label": "Update Setting",
+    "description": "Change one supported setting via native validation and save hooks. Get schemas from get-settings. URL host/domain mode and raw menu maps are excluded. Preview validates without executing hooks.",
+    "category": "polylang",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "expected_revision": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 300
+        },
+        "dry_run": {
+          "type": "boolean",
+          "default": true
+        },
+        "name": {
+          "type": "string",
+          "enum": [
+            "default_lang",
+            "hide_default",
+            "rewrite",
+            "redirect_lang",
+            "browser",
+            "media_support",
+            "post_types",
+            "taxonomies",
+            "sync"
+          ]
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "string",
+              "maxLength": 32
+            },
+            {
+              "type": "array",
+              "maxItems": 100,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "maxLength": 100
+              }
+            }
+          ]
+        }
+      },
+      "required": [
+        "expected_revision",
+        "reason",
+        "name",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": false,
+      "destructive": true,
+      "idempotent": true
+    }
+  },
+  "polylang/list-content": {
+    "name": "polylang/list-content",
+    "label": "List Content",
+    "description": "Find translated post types or taxonomies with their current language and translation links. Returns metadata only. Use get-content for a writable revision.",
+    "category": "polylang",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "post",
+            "term"
+          ]
+        },
+        "type": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "language": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_-]*$",
+          "maxLength": 32
+        },
+        "search": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "offset": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000
+        }
+      },
+      "required": [
+        "kind",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": true,
+      "destructive": false,
+      "idempotent": true
+    }
+  },
+  "polylang/get-content": {
+    "name": "polylang/get-content",
+    "label": "Get Content",
+    "description": "Read language, translation group and revision for one post or taxonomy term.",
+    "category": "polylang",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "post",
+            "term"
+          ]
+        },
+        "id": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "kind",
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": true,
+      "destructive": false,
+      "idempotent": true
+    }
+  },
+  "polylang/set-content-language": {
+    "name": "polylang/set-content-language",
+    "label": "Set Content Language",
+    "description": "Assign a language to an existing editable object. A language change of a linked object requires unlink-translation first. No content text is changed.",
+    "category": "polylang",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "expected_revision": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 300
+        },
+        "dry_run": {
+          "type": "boolean",
+          "default": true
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "post",
+            "term"
+          ]
+        },
+        "id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "language": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_-]*$",
+          "maxLength": 32
+        }
+      },
+      "required": [
+        "expected_revision",
+        "reason",
+        "kind",
+        "id",
+        "language"
+      ],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": false,
+      "destructive": true,
+      "idempotent": true
+    }
+  },
+  "polylang/link-translation": {
+    "name": "polylang/link-translation",
+    "label": "Link Translation",
+    "description": "Link an existing same-type object in another language to the source group. Preserves other translations; rejects occupied language slots and foreign groups. Requires fresh revisions for both objects.",
+    "category": "polylang",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "expected_revision": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 300
+        },
+        "dry_run": {
+          "type": "boolean",
+          "default": true
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "post",
+            "term"
+          ]
+        },
+        "id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "translation_id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "translation_revision": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "expected_revision",
+        "reason",
+        "kind",
+        "id",
+        "translation_id",
+        "translation_revision"
+      ],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": false,
+      "destructive": true,
+      "idempotent": true
+    }
+  },
+  "polylang/unlink-translation": {
+    "name": "polylang/unlink-translation",
+    "label": "Unlink Translation",
+    "description": "Detach only the selected object from its translation group without deleting content or removing its language.",
+    "category": "polylang",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "expected_revision": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 300
+        },
+        "dry_run": {
+          "type": "boolean",
+          "default": true
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "post",
+            "term"
+          ]
+        },
+        "id": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "expected_revision",
+        "reason",
+        "kind",
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": false,
+      "destructive": true,
+      "idempotent": true
+    }
+  },
+  "polylang/list-strings": {
+    "name": "polylang/list-strings",
+    "label": "List Strings",
+    "description": "List strings registered in this request and their native translation for a language. Admin-only third-party registrations may not be available over REST. Includes whole-catalog revision.",
+    "category": "polylang",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "language": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_-]*$",
+          "maxLength": 32
+        },
+        "search": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "offset": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000
+        }
+      },
+      "required": [
+        "language"
+      ],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": true,
+      "destructive": false,
+      "idempotent": true
+    }
+  },
+  "polylang/translate-string": {
+    "name": "polylang/translate-string",
+    "label": "Translate String",
+    "description": "Translate one registered string by its ID from list-strings. Preserves other translations and applies native sanitization. Empty translation removes this translation and restores source fallback.",
+    "category": "polylang",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "expected_revision": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 300
+        },
+        "dry_run": {
+          "type": "boolean",
+          "default": true
+        },
+        "language": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_-]*$",
+          "maxLength": 32
+        },
+        "string_id": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "translation": {
+          "type": "string",
+          "maxLength": 20000
+        }
+      },
+      "required": [
+        "expected_revision",
+        "reason",
+        "language",
+        "string_id",
+        "translation"
+      ],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": false,
+      "destructive": true,
+      "idempotent": true
+    }
+  },
+  "polylang/get-language-links": {
+    "name": "polylang/get-language-links",
+    "label": "Get Language Links",
+    "description": "Read native home URLs, or available translation URLs for a post. Supplies switcher link data without editing menus or widgets.",
+    "category": "polylang",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "post_id": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": true,
+      "destructive": false,
+      "idempotent": true
+    }
+  }
+}

@@ -1,0 +1,411 @@
+{
+  "wpvivid-backup/get-status": {
+    "label": "Inspect target status",
+    "description": "Read target identity, reviewed version, multisite and cron state. Does not initialize target defaults.",
+    "category": "wpvivid-backup",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "required": [
+        "result"
+      ],
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": true,
+      "destructive": false,
+      "idempotent": true
+    }
+  },
+  "wpvivid-backup/get-settings": {
+    "label": "Read supported settings",
+    "description": "Read stored supported settings and a revision over the complete native option. Missing fields are listed; no defaults are persisted.",
+    "category": "wpvivid-backup",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "required": [
+        "result"
+      ],
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": true,
+      "destructive": false,
+      "idempotent": true
+    }
+  },
+  "wpvivid-backup/get-settings-schema": {
+    "label": "Discover writable settings",
+    "description": "Return exact types and limits accepted by update-settings.",
+    "category": "wpvivid-backup",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "required": [
+        "result"
+      ],
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": true,
+      "destructive": false,
+      "idempotent": true
+    }
+  },
+  "wpvivid-backup/update-settings": {
+    "label": "Patch supported settings",
+    "description": "Preview a minimal settings delta. Explicit dry_run false writes only this site using a revision check and InnoDB row lock. Unknown and credential-bearing settings are rejected. Current site backup runtime settings; no retention changes.",
+    "category": "wpvivid-backup",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "expected_revision": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "Revision from a fresh get-settings response."
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 300,
+          "description": "Operator rationale; never include secrets. Not written to the audit summary."
+        },
+        "dry_run": {
+          "type": "boolean",
+          "default": true,
+          "description": "Preview unless explicitly false."
+        },
+        "changes": {
+          "type": "object",
+          "properties": {
+            "max_execution_time": {
+              "type": "integer",
+              "description": "Maximum execution time in seconds for future backup tasks.",
+              "minimum": 30,
+              "maximum": 900
+            },
+            "max_resume_count": {
+              "type": "integer",
+              "description": "Maximum retries for future backup tasks.",
+              "minimum": 0,
+              "maximum": 12
+            },
+            "compress_file_count": {
+              "type": "integer",
+              "description": "Files per compression batch for future tasks.",
+              "minimum": 10,
+              "maximum": 5000
+            },
+            "max_file_size": {
+              "type": "integer",
+              "description": "Archive split size in MiB for future backups.",
+              "minimum": 10,
+              "maximum": 1024
+            },
+            "max_sql_file_size": {
+              "type": "integer",
+              "description": "SQL split size in MiB for future backups.",
+              "minimum": 10,
+              "maximum": 1024
+            },
+            "show_admin_bar": {
+              "type": "boolean",
+              "description": "Show the WPvivid shortcut in the administration toolbar."
+            }
+          },
+          "minProperties": 1,
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "expected_revision",
+        "reason",
+        "changes"
+      ],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "required": [
+        "result"
+      ],
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": false,
+      "destructive": true,
+      "idempotent": true
+    }
+  },
+  "wpvivid-backup/list-cron-events": {
+    "label": "Inspect WPvivid cron events",
+    "description": "List shared WPvivid cron timestamps without arguments or executing callbacks.",
+    "category": "wpvivid-backup",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100,
+          "default": 25,
+          "description": "Maximum returned records."
+        },
+        "offset": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000,
+          "default": 0,
+          "description": "Records skipped in deterministic order."
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "required": [
+        "result"
+      ],
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": true,
+      "destructive": false,
+      "idempotent": true
+    }
+  },
+  "wpvivid-backup/list-backups": {
+    "label": "List backup catalog",
+    "description": "Read backup IDs, timestamps, result metadata and archive-part counts. Does not verify archives or restore integrity.",
+    "category": "wpvivid-backup",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100,
+          "default": 25,
+          "description": "Maximum returned records."
+        },
+        "offset": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000,
+          "default": 0,
+          "description": "Records skipped in deterministic order."
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "required": [
+        "result"
+      ],
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": true,
+      "destructive": false,
+      "idempotent": true
+    }
+  },
+  "wpvivid-backup/list-tasks": {
+    "label": "Inspect backup tasks",
+    "description": "Read native backup task states and progress; no options, filenames or raw errors are returned.",
+    "category": "wpvivid-backup",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100,
+          "default": 25,
+          "description": "Maximum returned records."
+        },
+        "offset": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000,
+          "default": 0,
+          "description": "Records skipped in deterministic order."
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "required": [
+        "result"
+      ],
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": true,
+      "destructive": false,
+      "idempotent": true
+    }
+  },
+  "wpvivid-backup/list-remote-storage": {
+    "label": "List configured remote storage",
+    "description": "Read configured remote destination IDs only. Does not authenticate to providers or test connectivity.",
+    "category": "wpvivid-backup",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100,
+          "default": 25,
+          "description": "Maximum returned records."
+        },
+        "offset": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000,
+          "default": 0,
+          "description": "Records skipped in deterministic order."
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "required": [
+        "result"
+      ],
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": true,
+      "destructive": false,
+      "idempotent": true
+    }
+  },
+  "wpvivid-backup/start-local-backup": {
+    "label": "Start a local backup",
+    "description": "Preview by default. With dry_run false and acknowledge_retention true, prepare and queue a native manual local backup. Native retention may delete old unlocked backups. Requires a UUID v4 request_id reused across retries. A preparing or schedule_failed receipt requires reconciliation, not a new request. Poll list-tasks and list-backups for completion.",
+    "category": "wpvivid-backup",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "content": {
+          "type": "string",
+          "enum": [
+            "files+db",
+            "db",
+            "files"
+          ],
+          "default": "files+db",
+          "description": "Native backup content selection."
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$",
+          "description": "UUID v4 unique to this logical request; reuse on retries."
+        },
+        "dry_run": {
+          "type": "boolean",
+          "default": true,
+          "description": "Preview unless explicitly false."
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 300,
+          "description": "Operator rationale; never include secrets. Not written to the audit summary."
+        },
+        "acknowledge_retention": {
+          "type": "boolean",
+          "default": false,
+          "description": "Explicit acknowledgment that native retention can delete old unlocked backups. Required true for execution."
+        }
+      },
+      "required": [
+        "request_id",
+        "reason"
+      ],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "required": [
+        "result"
+      ],
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": false,
+      "destructive": true,
+      "idempotent": false
+    }
+  }
+}

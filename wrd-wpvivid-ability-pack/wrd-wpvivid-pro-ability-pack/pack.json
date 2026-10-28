@@ -1,0 +1,8 @@
+{
+  "slug": "wrd-wpvivid-pro-ability-pack",
+  "version": "0.1.0",
+  "target_plugin": "wpvivid-backup-pro/wpvivid-backup-pro.php",
+  "tested_target_plugin_version": "2.2.53",
+  "requires_plugin": "agent-connector-for-wp",
+  "license": "GPL-3.0-or-later"
+}

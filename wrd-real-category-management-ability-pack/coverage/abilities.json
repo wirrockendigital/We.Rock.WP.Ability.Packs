@@ -1,0 +1,615 @@
+{
+  "real-category-management/get-status": {
+    "name": "real-category-management/get-status",
+    "label": "Get Status",
+    "description": "Read informative source version and native operation availability. Versions alone never block operations.",
+    "category": "real-category-management",
+    "input_schema": {
+      "type": "object",
+      "properties": [],
+      "required": [],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": true,
+      "destructive": false,
+      "idempotent": true
+    }
+  },
+  "real-category-management/list-contexts": {
+    "name": "real-category-management/list-contexts",
+    "label": "List Contexts",
+    "description": "Discover available post types, hierarchical taxonomies, sorting support and current tree settings.",
+    "category": "real-category-management",
+    "input_schema": {
+      "type": "object",
+      "properties": [],
+      "required": [],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": true,
+      "destructive": false,
+      "idempotent": true
+    }
+  },
+  "real-category-management/get-tree": {
+    "name": "real-category-management/get-tree",
+    "label": "Get Tree",
+    "description": "Read the native category tree plus complete term metadata and a tree revision. Does not remember a UI selection.",
+    "category": "real-category-management",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "post_type": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]+$",
+          "maxLength": 64
+        },
+        "taxonomy": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]+$",
+          "maxLength": 64
+        }
+      },
+      "required": [
+        "post_type",
+        "taxonomy"
+      ],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": true,
+      "destructive": false,
+      "idempotent": true
+    }
+  },
+  "real-category-management/create-term": {
+    "name": "real-category-management/create-term",
+    "label": "Create Term",
+    "description": "Create one category through the native plugin controller. Get expected_revision from get-tree. Parent defaults to root.",
+    "category": "real-category-management",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "post_type": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]+$",
+          "maxLength": 64
+        },
+        "taxonomy": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]+$",
+          "maxLength": 64
+        },
+        "expected_revision": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 300
+        },
+        "dry_run": {
+          "type": "boolean",
+          "default": true
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "parent": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "post_type",
+        "taxonomy",
+        "expected_revision",
+        "reason",
+        "name"
+      ],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": false,
+      "destructive": true,
+      "idempotent": false
+    }
+  },
+  "real-category-management/rename-term": {
+    "name": "real-category-management/rename-term",
+    "label": "Rename Term",
+    "description": "Rename a category through the native plugin controller. Native behavior also changes its slug and therefore may change archive URLs.",
+    "category": "real-category-management",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "post_type": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]+$",
+          "maxLength": 64
+        },
+        "taxonomy": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]+$",
+          "maxLength": 64
+        },
+        "expected_revision": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 300
+        },
+        "dry_run": {
+          "type": "boolean",
+          "default": true
+        },
+        "term_id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        }
+      },
+      "required": [
+        "post_type",
+        "taxonomy",
+        "expected_revision",
+        "reason",
+        "term_id",
+        "name"
+      ],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": false,
+      "destructive": true,
+      "idempotent": true
+    }
+  },
+  "real-category-management/relocate-term": {
+    "name": "real-category-management/relocate-term",
+    "label": "Relocate Term",
+    "description": "Move a category to parent (0=root), before before_id (0=end), through native ordering. Rejects cycles and invalid siblings. Get expected_revision from get-tree.",
+    "category": "real-category-management",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "post_type": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]+$",
+          "maxLength": 64
+        },
+        "taxonomy": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]+$",
+          "maxLength": 64
+        },
+        "expected_revision": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 300
+        },
+        "dry_run": {
+          "type": "boolean",
+          "default": true
+        },
+        "term_id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "parent": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "before_id": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "post_type",
+        "taxonomy",
+        "expected_revision",
+        "reason",
+        "term_id",
+        "parent",
+        "before_id"
+      ],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": false,
+      "destructive": true,
+      "idempotent": true
+    }
+  },
+  "real-category-management/delete-empty-term": {
+    "name": "real-category-management/delete-empty-term",
+    "label": "Delete Empty Term",
+    "description": "Delete only an empty, childless non-default category. Checks actual relationships, not cached public counts. Get expected_revision from get-tree.",
+    "category": "real-category-management",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "post_type": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]+$",
+          "maxLength": 64
+        },
+        "taxonomy": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]+$",
+          "maxLength": 64
+        },
+        "expected_revision": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 300
+        },
+        "dry_run": {
+          "type": "boolean",
+          "default": true
+        },
+        "term_id": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "post_type",
+        "taxonomy",
+        "expected_revision",
+        "reason",
+        "term_id"
+      ],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": false,
+      "destructive": true,
+      "idempotent": true
+    }
+  },
+  "real-category-management/get-assignments": {
+    "name": "real-category-management/get-assignments",
+    "label": "Get Assignments",
+    "description": "Read taxonomy assignments of up to 50 individually editable posts/pages and the revision needed for assign-posts.",
+    "category": "real-category-management",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "post_type": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]+$",
+          "maxLength": 64
+        },
+        "taxonomy": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]+$",
+          "maxLength": 64
+        },
+        "post_ids": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 50,
+          "uniqueItems": true,
+          "items": {
+            "type": "integer",
+            "minimum": 1
+          }
+        }
+      },
+      "required": [
+        "post_type",
+        "taxonomy",
+        "post_ids"
+      ],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": true,
+      "destructive": false,
+      "idempotent": true
+    }
+  },
+  "real-category-management/assign-posts": {
+    "name": "real-category-management/assign-posts",
+    "label": "Assign Posts",
+    "description": "Move posts to one category (replace this taxonomy only) or copy (append category without duplicating content). target_id=0 removes assignments; WordPress may restore its default category. Get expected_revision from get-assignments using the same post_ids.",
+    "category": "real-category-management",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "post_type": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]+$",
+          "maxLength": 64
+        },
+        "taxonomy": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]+$",
+          "maxLength": 64
+        },
+        "expected_revision": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 300
+        },
+        "dry_run": {
+          "type": "boolean",
+          "default": true
+        },
+        "post_ids": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 50,
+          "uniqueItems": true,
+          "items": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "target_id": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "move",
+            "copy"
+          ]
+        }
+      },
+      "required": [
+        "post_type",
+        "taxonomy",
+        "expected_revision",
+        "reason",
+        "post_ids",
+        "target_id",
+        "mode"
+      ],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": false,
+      "destructive": true,
+      "idempotent": true
+    }
+  },
+  "real-category-management/get-settings": {
+    "name": "real-category-management/get-settings",
+    "label": "Get Settings",
+    "description": "Read active/fastMode for one available post type and its settings revision.",
+    "category": "real-category-management",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "post_type": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]+$",
+          "maxLength": 64
+        }
+      },
+      "required": [
+        "post_type"
+      ],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": true,
+      "destructive": false,
+      "idempotent": true
+    }
+  },
+  "real-category-management/update-settings": {
+    "name": "real-category-management/update-settings",
+    "label": "Update Settings",
+    "description": "Patch only supplied active/fastMode flags through the native plugin controller. Requires manage_options. Get expected_revision from get-settings.",
+    "category": "real-category-management",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "expected_revision": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 300
+        },
+        "dry_run": {
+          "type": "boolean",
+          "default": true
+        },
+        "post_type": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]+$",
+          "maxLength": 64
+        },
+        "changes": {
+          "type": "object",
+          "properties": {
+            "active": {
+              "type": "boolean"
+            },
+            "fastMode": {
+              "type": "boolean"
+            }
+          },
+          "required": [],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "post_type",
+        "expected_revision",
+        "reason",
+        "changes"
+      ],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": false,
+      "destructive": true,
+      "idempotent": true
+    }
+  }
+}

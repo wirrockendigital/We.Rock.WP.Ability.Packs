@@ -1,0 +1,8 @@
+{
+  "slug": "wrd-code-snippets-ability-pack",
+  "version": "0.1.0",
+  "target_plugin": "code-snippets-pro/code-snippets.php",
+  "tested_target_plugin_version": "4.0.0",
+  "requires_plugin": "agent-connector-for-wp",
+  "license": "GPL-3.0-or-later"
+}

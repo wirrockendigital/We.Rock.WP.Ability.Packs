@@ -1,0 +1,10 @@
+[
+  "real-media-library/get-status",
+  "real-media-library/list-folders",
+  "real-media-library/get-folder",
+  "real-media-library/list-attachments",
+  "real-media-library/create-folder",
+  "real-media-library/rename-folder",
+  "real-media-library/move-attachments",
+  "real-media-library/delete-empty-folder"
+]

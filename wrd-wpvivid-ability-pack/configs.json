@@ -1,0 +1,144 @@
+[
+  {
+    "key": "backup",
+    "ns": "Backup",
+    "slug": "wpvivid-backuprestore",
+    "version": "0.9.136",
+    "constant": "WPVIVID_PLUGIN_VERSION",
+    "option": "wpvivid_common_setting",
+    "scope": "Current site backup runtime settings; no retention changes.",
+    "fields": {
+      "max_execution_time": {
+        "type": "integer",
+        "description": "Maximum execution time in seconds for future backup tasks.",
+        "minimum": 30,
+        "maximum": 900
+      },
+      "max_resume_count": {
+        "type": "integer",
+        "description": "Maximum retries for future backup tasks.",
+        "minimum": 0,
+        "maximum": 12
+      },
+      "compress_file_count": {
+        "type": "integer",
+        "description": "Files per compression batch for future tasks.",
+        "minimum": 10,
+        "maximum": 5000
+      },
+      "max_file_size": {
+        "type": "integer",
+        "description": "Archive split size in MiB for future backups.",
+        "minimum": 10,
+        "maximum": 1024
+      },
+      "max_sql_file_size": {
+        "type": "integer",
+        "description": "SQL split size in MiB for future backups.",
+        "minimum": 10,
+        "maximum": 1024
+      },
+      "show_admin_bar": {
+        "type": "boolean",
+        "description": "Show the WPvivid shortcut in the administration toolbar."
+      }
+    }
+  },
+  {
+    "key": "pro",
+    "ns": "Pro",
+    "slug": "wpvivid-backup-pro",
+    "version": "2.2.53",
+    "constant": "WPVIVID_BACKUP_PRO_VERSION",
+    "option": "wpvivid_common_setting",
+    "scope": "Current site Pro settings; retain_local controls retention after future remote uploads.",
+    "fields": {
+      "retain_local": {
+        "type": "boolean",
+        "description": "Retain a local copy after a future remote backup upload."
+      },
+      "hide_admin_update_notice": {
+        "type": "boolean",
+        "description": "Hide the WPvivid Pro update notice."
+      }
+    }
+  },
+  {
+    "key": "staging",
+    "ns": "Staging",
+    "slug": "wpvivid-staging",
+    "version": "2.0.25",
+    "constant": "WPVIVID_STAGING_VERSION",
+    "option": "wpvivid_staging_options",
+    "scope": "Only this site and its future staging jobs. Existing child sites are not synchronized.",
+    "fields": {
+      "staging_db_insert_count": {
+        "type": "integer",
+        "description": "Database insert batch size.",
+        "minimum": 100,
+        "maximum": 50000
+      },
+      "staging_db_replace_count": {
+        "type": "integer",
+        "description": "Database replacement batch size.",
+        "minimum": 100,
+        "maximum": 50000
+      },
+      "staging_file_copy_count": {
+        "type": "integer",
+        "description": "Files copied per batch.",
+        "minimum": 10,
+        "maximum": 5000
+      },
+      "staging_max_execution_time": {
+        "type": "integer",
+        "description": "Maximum batch execution time in seconds.",
+        "minimum": 30,
+        "maximum": 900
+      },
+      "staging_resume_count": {
+        "type": "integer",
+        "description": "Maximum retries per staging job.",
+        "minimum": 0,
+        "maximum": 12
+      },
+      "staging_request_timeout": {
+        "type": "integer",
+        "description": "Delay between requests in milliseconds.",
+        "minimum": 500,
+        "maximum": 10000
+      }
+    }
+  },
+  {
+    "key": "imgoptim-free",
+    "ns": "ImgoptimFree",
+    "slug": "wpvivid-imgoptim",
+    "version": "0.9.25",
+    "constant": "WPVIVID_IMGOPTIM_VERSION",
+    "option": "wpvivid_optimization_options",
+    "scope": "Current site optimization settings for future work; saving does not optimize existing images.",
+    "fields": {
+      "quality": {
+        "type": "string",
+        "description": "Compression mode used for future optimization.",
+        "enum": [
+          "lossless",
+          "lossy"
+        ]
+      },
+      "keep_exif": {
+        "type": "boolean",
+        "description": "Keep EXIF metadata during future image optimization."
+      },
+      "backup": {
+        "type": "boolean",
+        "description": "Keep original image backups during future optimization."
+      },
+      "only_resize": {
+        "type": "boolean",
+        "description": "Resize images without compression during future operations."
+      }
+    }
+  }
+]

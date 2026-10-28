@@ -1,0 +1,2 @@
+# JSON Schema validation for the source inventories and exported ability contracts.
+jsonschema>=4,<5

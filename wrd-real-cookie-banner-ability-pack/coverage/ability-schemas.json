@@ -1,0 +1,744 @@
+{
+  "real-cookie-banner/get-status": {
+    "label": "Get Status",
+    "category": "real-cookie-banner",
+    "description": "Read reviewed target support and write scope.",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": true,
+      "destructive": false,
+      "idempotent": true
+    }
+  },
+  "real-cookie-banner/get-settings": {
+    "label": "Get Settings",
+    "category": "real-cookie-banner",
+    "description": "Read selected banner, blocker, country and page-reference options. No license, contact or consent data.",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": true,
+      "destructive": false,
+      "idempotent": true
+    }
+  },
+  "real-cookie-banner/list-groups": {
+    "label": "List Groups",
+    "category": "real-cookie-banner",
+    "description": "List up to 100 existing service groups and essential flags.",
+    "input_schema": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": true,
+      "destructive": false,
+      "idempotent": true
+    }
+  },
+  "real-cookie-banner/list-items": {
+    "label": "List Items",
+    "category": "real-cookie-banner",
+    "description": "List service or blocker metadata and a catalog revision. Includes drafts and trash; omits code and descriptions.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "service",
+            "blocker"
+          ]
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "offset": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": true,
+      "destructive": false,
+      "idempotent": true
+    }
+  },
+  "real-cookie-banner/get-item": {
+    "label": "Get Item",
+    "category": "real-cookie-banner",
+    "description": "Read a typed item and revision. include_details explicitly returns editable content, including code and provider contacts, to the authorized caller.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "service",
+            "blocker"
+          ]
+        },
+        "id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "include_details": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "required": [
+        "kind",
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": true,
+      "destructive": false,
+      "idempotent": true
+    }
+  },
+  "real-cookie-banner/get-edit-schema": {
+    "label": "Get Edit Schema",
+    "category": "real-cookie-banner",
+    "description": "Discover writable fields for the selected native item kind.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "service",
+            "blocker"
+          ]
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": true,
+      "destructive": false,
+      "idempotent": true
+    }
+  },
+  "real-cookie-banner/create-draft": {
+    "label": "Create Draft",
+    "category": "real-cookie-banner",
+    "description": "Create a service or blocker draft through native WordPress operations. Preview by default; published items are protected. Restore accepts only former drafts.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "service",
+            "blocker"
+          ]
+        },
+        "expected_revision": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "Fresh item revision; use catalog_revision from list-items for creation."
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 300
+        },
+        "dry_run": {
+          "type": "boolean",
+          "default": true
+        },
+        "changes": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "description": {
+                  "type": "string",
+                  "maxLength": 20000
+                },
+                "groups": {
+                  "type": "array",
+                  "maxItems": 30,
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                },
+                "meta": {
+                  "type": "object",
+                  "properties": {
+                    "isProviderCurrentWebsite": {
+                      "type": "boolean"
+                    },
+                    "provider": {
+                      "type": "string",
+                      "maxLength": 2000
+                    },
+                    "providerContactPhone": {
+                      "type": "string",
+                      "maxLength": 100
+                    },
+                    "providerContactEmail": {
+                      "type": "string",
+                      "maxLength": 254
+                    },
+                    "providerContactLink": {
+                      "type": "string",
+                      "maxLength": 2000
+                    },
+                    "uniqueName": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 100,
+                      "pattern": "^[a-zA-Z0-9_-]+$"
+                    },
+                    "providerPrivacyPolicyUrl": {
+                      "type": "string",
+                      "maxLength": 2000
+                    },
+                    "providerLegalNoticeUrl": {
+                      "type": "string",
+                      "maxLength": 2000
+                    },
+                    "codeOptIn": {
+                      "type": "string",
+                      "maxLength": 100000
+                    },
+                    "codeOptOut": {
+                      "type": "string",
+                      "maxLength": 100000
+                    },
+                    "codeOnPageLoad": {
+                      "type": "string",
+                      "maxLength": 100000
+                    },
+                    "executePriority": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 999
+                    }
+                  },
+                  "required": [],
+                  "additionalProperties": false,
+                  "minProperties": 1
+                }
+              },
+              "required": [
+                "title"
+              ],
+              "additionalProperties": false,
+              "minProperties": 1
+            },
+            {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "description": {
+                  "type": "string",
+                  "maxLength": 20000
+                },
+                "service_ids": {
+                  "type": "array",
+                  "maxItems": 30,
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                },
+                "meta": {
+                  "type": "object",
+                  "properties": {
+                    "rules": {
+                      "type": "string",
+                      "maxLength": 20000
+                    },
+                    "isVisual": {
+                      "type": "boolean"
+                    },
+                    "isVisualDarkMode": {
+                      "type": "boolean"
+                    },
+                    "visualBlur": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 100
+                    },
+                    "visualHeroButtonText": {
+                      "type": "string",
+                      "maxLength": 300
+                    },
+                    "shouldForceToShowVisual": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [],
+                  "additionalProperties": false,
+                  "minProperties": 1
+                }
+              },
+              "required": [
+                "title"
+              ],
+              "additionalProperties": false,
+              "minProperties": 1
+            }
+          ]
+        }
+      },
+      "required": [
+        "kind",
+        "expected_revision",
+        "reason",
+        "changes"
+      ],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": false,
+      "destructive": true,
+      "idempotent": false
+    }
+  },
+  "real-cookie-banner/update-draft": {
+    "label": "Update Draft",
+    "category": "real-cookie-banner",
+    "description": "Update a service or blocker draft through native WordPress operations. Preview by default; published items are protected. Restore accepts only former drafts.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "service",
+            "blocker"
+          ]
+        },
+        "expected_revision": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "Fresh item revision; use catalog_revision from list-items for creation."
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 300
+        },
+        "dry_run": {
+          "type": "boolean",
+          "default": true
+        },
+        "id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "changes": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "description": {
+                  "type": "string",
+                  "maxLength": 20000
+                },
+                "groups": {
+                  "type": "array",
+                  "maxItems": 30,
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                },
+                "meta": {
+                  "type": "object",
+                  "properties": {
+                    "isProviderCurrentWebsite": {
+                      "type": "boolean"
+                    },
+                    "provider": {
+                      "type": "string",
+                      "maxLength": 2000
+                    },
+                    "providerContactPhone": {
+                      "type": "string",
+                      "maxLength": 100
+                    },
+                    "providerContactEmail": {
+                      "type": "string",
+                      "maxLength": 254
+                    },
+                    "providerContactLink": {
+                      "type": "string",
+                      "maxLength": 2000
+                    },
+                    "uniqueName": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 100,
+                      "pattern": "^[a-zA-Z0-9_-]+$"
+                    },
+                    "providerPrivacyPolicyUrl": {
+                      "type": "string",
+                      "maxLength": 2000
+                    },
+                    "providerLegalNoticeUrl": {
+                      "type": "string",
+                      "maxLength": 2000
+                    },
+                    "codeOptIn": {
+                      "type": "string",
+                      "maxLength": 100000
+                    },
+                    "codeOptOut": {
+                      "type": "string",
+                      "maxLength": 100000
+                    },
+                    "codeOnPageLoad": {
+                      "type": "string",
+                      "maxLength": 100000
+                    },
+                    "executePriority": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 999
+                    }
+                  },
+                  "required": [],
+                  "additionalProperties": false,
+                  "minProperties": 1
+                }
+              },
+              "required": [],
+              "additionalProperties": false,
+              "minProperties": 1
+            },
+            {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "description": {
+                  "type": "string",
+                  "maxLength": 20000
+                },
+                "service_ids": {
+                  "type": "array",
+                  "maxItems": 30,
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                },
+                "meta": {
+                  "type": "object",
+                  "properties": {
+                    "rules": {
+                      "type": "string",
+                      "maxLength": 20000
+                    },
+                    "isVisual": {
+                      "type": "boolean"
+                    },
+                    "isVisualDarkMode": {
+                      "type": "boolean"
+                    },
+                    "visualBlur": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 100
+                    },
+                    "visualHeroButtonText": {
+                      "type": "string",
+                      "maxLength": 300
+                    },
+                    "shouldForceToShowVisual": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [],
+                  "additionalProperties": false,
+                  "minProperties": 1
+                }
+              },
+              "required": [],
+              "additionalProperties": false,
+              "minProperties": 1
+            }
+          ]
+        }
+      },
+      "required": [
+        "kind",
+        "expected_revision",
+        "reason",
+        "id",
+        "changes"
+      ],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": false,
+      "destructive": true,
+      "idempotent": true
+    }
+  },
+  "real-cookie-banner/trash-draft": {
+    "label": "Trash Draft",
+    "category": "real-cookie-banner",
+    "description": "Trash a service or blocker draft through native WordPress operations. Preview by default; published items are protected. Restore accepts only former drafts.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "service",
+            "blocker"
+          ]
+        },
+        "expected_revision": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "Fresh item revision; use catalog_revision from list-items for creation."
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 300
+        },
+        "dry_run": {
+          "type": "boolean",
+          "default": true
+        },
+        "id": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "kind",
+        "expected_revision",
+        "reason",
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": false,
+      "destructive": true,
+      "idempotent": true
+    }
+  },
+  "real-cookie-banner/restore-draft": {
+    "label": "Restore Draft",
+    "category": "real-cookie-banner",
+    "description": "Restore a service or blocker draft through native WordPress operations. Preview by default; published items are protected. Restore accepts only former drafts.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "service",
+            "blocker"
+          ]
+        },
+        "expected_revision": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "Fresh item revision; use catalog_revision from list-items for creation."
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 300
+        },
+        "dry_run": {
+          "type": "boolean",
+          "default": true
+        },
+        "id": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "kind",
+        "expected_revision",
+        "reason",
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "annotations": {
+      "readonly": false,
+      "destructive": true,
+      "idempotent": true
+    }
+  }
+}

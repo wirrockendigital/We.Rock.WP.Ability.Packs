@@ -1,0 +1,42 @@
+[
+  {
+    "name": "wpvivid-staging/get-status",
+    "method": "status",
+    "schema": "empty"
+  },
+  {
+    "name": "wpvivid-staging/get-settings",
+    "method": "settings",
+    "schema": "empty"
+  },
+  {
+    "name": "wpvivid-staging/get-settings-schema",
+    "method": "settingsSchema",
+    "schema": "empty"
+  },
+  {
+    "name": "wpvivid-staging/update-settings",
+    "method": "updateSettings",
+    "schema": "write"
+  },
+  {
+    "name": "wpvivid-staging/list-cron-events",
+    "method": "cron",
+    "schema": "page"
+  },
+  {
+    "name": "wpvivid-staging/list-sites",
+    "method": "sites",
+    "schema": "page"
+  },
+  {
+    "name": "wpvivid-staging/list-tasks",
+    "method": "tasks",
+    "schema": "page"
+  },
+  {
+    "name": "wpvivid-staging/get-access-settings",
+    "method": "access",
+    "schema": "empty"
+  }
+]
