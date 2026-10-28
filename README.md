@@ -1,38 +1,50 @@
-# We.Rock WordPress MCP Ability Packs
+# Unofficial We.Rock WordPress MCP Ability Packs for AI Agents
 
-Independent WordPress Ability API plugins that give AI agents focused tools for backup management, multilingual content, category trees, media folders, code snippets, firewall diagnostics, and cookie-banner drafts. Each pack registers structured abilities through [Agent Connector for WP](https://github.com/soflyy/agent-connector-for-wp), the underlying WordPress MCP project from Soflyy.
+These **unofficial WordPress ability packs** let an AI agent work with selected WordPress plugins through [Agent Connector for WP](https://github.com/soflyy/agent-connector-for-wp). Each pack adds a focused set of tools for one plugin, such as reading backup status, finding media folders, reviewing firewall incidents, or preparing a draft. You install only the packs for plugins you already use.
 
-The reference development site uses [Oxygen 6](https://oxygenbuilder.com/) as its WordPress page builder. These packs extend the named WordPress plugins through Agent Connector; install the packs that match the plugins on your site.
+Agent Connector for WP provides the connection between an AI agent and the WordPress Abilities API. The packs add plugin-specific actions to that connection. They are useful when you want an agent to help with a real WordPress task while seeing the relevant plugin state, permissions, and a preview before supported changes. The project was developed for WordPress sites using [Oxygen 6](https://oxygenbuilder.com/) as the page builder.
 
-## Ability packs
+These are third-party integrations. They are not official products of Soflyy, Oxygen, or the vendors of the supported plugins.
 
-Each pack has its **own version**, starting at `0.1.0`. The target version below identifies the WordPress plugin source reviewed for that pack. Runtime availability also depends on the native functions and permissions required by each operation.
+## Choose a pack
 
-| Pack | WordPress plugin and reviewed version | Abilities |
-|---|---|---:|
-| [NinjaFirewall](wrd-ninjafirewall-ability-pack/) | NinjaFirewall 4.9.2 | 13 |
-| [Code Snippets Pro](wrd-code-snippets-ability-pack/) | Code Snippets Pro 4.0.0 | 10 |
-| [Polylang Free](wrd-polylang-ability-pack/) | Polylang Free 3.9.1 | 14 |
-| [Real Category Management](wrd-real-category-management-ability-pack/) | Real Category Management 4.3.7 | 11 |
-| [Real Cookie Banner](wrd-real-cookie-banner-ability-pack/) | Real Cookie Banner 5.4.0 | 10 |
-| [Real Media Library](wrd-real-media-library-ability-pack/) | Real Media Library 4.23.7 | 8 |
-| [WPvivid Backup](wrd-wpvivid-ability-pack/wrd-wpvivid-backup-ability-pack/) | WPvivid Backup 0.9.136 | 9 |
-| [WPvivid Pro](wrd-wpvivid-ability-pack/wrd-wpvivid-pro-ability-pack/) | WPvivid Pro 2.2.53 | 9 |
-| [WPvivid Staging](wrd-wpvivid-ability-pack/wrd-wpvivid-staging-ability-pack/) | WPvivid Staging 2.0.25 | 8 |
-| [WPvivid Imgoptim Free](wrd-wpvivid-ability-pack/wrd-wpvivid-imgoptim-free-ability-pack/) | WPvivid Imgoptim Free 0.9.25 | 9 |
+| Pack | What your AI agent can do |
+|---|---|
+| [NinjaFirewall](wrd-ninjafirewall-ability-pack/) | Check protection status, review redacted incidents and statistics, inspect selected settings and rules, and preview supported changes. |
+| [Code Snippets Pro](wrd-code-snippets-ability-pack/) | Find and review snippets, validate code, prepare inactive snippets, and manage their activation and lifecycle. |
+| [Polylang Free](wrd-polylang-ability-pack/) | Inspect languages and settings, manage content language assignments and translation links, and work with registered string translations. |
+| [Real Category Management](wrd-real-category-management-ability-pack/) | Explore category trees, manage terms and ordering, inspect content assignments, and adjust selected settings. |
+| [Real Cookie Banner](wrd-real-cookie-banner-ability-pack/) | Inspect consent groups and manage service or content-blocker drafts. |
+| [Real Media Library](wrd-real-media-library-ability-pack/) | Browse media folders, manage folders, and assign attachments. |
+| [WPvivid Backup](wrd-wpvivid-ability-pack/wrd-wpvivid-backup-ability-pack/) | Review backup settings, schedules, tasks, and archives; request a local backup with an explicit confirmation. |
+| [WPvivid Pro](wrd-wpvivid-ability-pack/wrd-wpvivid-pro-ability-pack/) | Inspect Pro settings, schedules, retention information, module status, and backup diagnostics. |
+| [WPvivid Staging](wrd-wpvivid-ability-pack/wrd-wpvivid-staging-ability-pack/) | Review staging settings, sites, tasks, access defaults, and scheduled events. |
+| [WPvivid Imgoptim Free](wrd-wpvivid-ability-pack/wrd-wpvivid-imgoptim-free-ability-pack/) | Inspect image optimization tasks, image status, sizes, lazy-loading settings, and supported options. |
 
-The WordPress plugin header and `pack.json` inside each pack carry its independent version, target plugin slug, and reviewed target version.
+Open a pack's page for its available agent tools and usage notes.
 
-## Install
+## Install on WordPress
 
-Use WordPress 7.0+, PHP 8.1+, the target plugin, and [Agent Connector for WP](https://github.com/soflyy/agent-connector-for-wp/releases). Package and activate one pack at a time. The [installation guide for AI agents](INSTALL_FOR_AI_AGENTS.md) covers prerequisite checks, ZIP creation, MCP discovery, and verification.
+1. Install and activate the WordPress plugin you want the agent to use. For example, the Real Media Library pack requires Real Media Library.
+2. Install and activate the [official Agent Connector for WP release](https://github.com/soflyy/agent-connector-for-wp/releases). Follow its setup instructions to connect your AI agent.
+3. Download or clone this repository and create the installable ZIP for your chosen pack. This example packages Real Media Library:
 
-Each pack appears as a separate entry under **Plugins → Installed Plugins** with its `We.Rock.<PluginName>.Ability.Pack` display name, pack version, and `wir.rocken.digital` author.
+   ```sh
+   git clone https://github.com/wirrockendigital/We.Rock.WP.Ability.Packs.git
+   cd We.Rock.WP.Ability.Packs
+   python3 scripts/package_pack.py wrd-real-media-library-ability-pack
+   ```
 
-## Use
+4. In WordPress, open **Plugins → Add New → Upload Plugin**, select `dist/wrd-real-media-library-ability-pack-0.1.0.zip`, and activate it. Replace the example pack path and ZIP name with the pack you chose.
 
-Connect an authorized AI agent to Agent Connector for WP, discover the pack's ability namespace, and start with its `get-status` ability. Read the relevant state before a change, pass its `expected_revision` and a reason, inspect the default `dry_run` preview, then explicitly set `dry_run: false` for an authorized write. The exact input and output contracts are defined in each pack's `abilities/register.php`.
+The pack appears as its own entry under **Plugins → Installed Plugins**, alongside Agent Connector and the target plugin. Check the pack page for any plugin-specific requirements. An [installation guide for AI agents](INSTALL_FOR_AI_AGENTS.md) gives the full verification workflow for automated installation.
+
+## Use with an AI agent
+
+Connect your agent through Agent Connector for WP and ask it to discover the tools from the installed pack. Start with a read-only request, for example: “Show me the latest WPvivid backup status and available backup tools. Do not change anything.”
+
+For a change, ask the agent to read the current state and show you the preview first. Review the proposed action before asking it to apply the change. Some actions, including enabling executable snippets or starting a backup, require an additional explicit acknowledgement. Each pack's page lists its tools and the information needed for its actions.
 
 ## License and responsibility
 
-The repository and each pack are licensed under [GPL-3.0-or-later](LICENSE); see the [source notice](NOTICE.md). The software is provided **as is**, without warranty. Use it at your own risk. To the extent permitted by applicable law, the maintainers accept no liability for damage or loss arising from its use; the license contains the full legal terms. Back up the site and verify the exact target plugin before installing or allowing an agent to write.
+The packs are licensed under [GPL-3.0-or-later](LICENSE). They are provided **as is**, without warranty. Use them at your own risk. To the extent permitted by applicable law, the maintainers accept no liability for damage or loss arising from their use; the license contains the full legal terms. Make a verified backup before installation or changes.
