@@ -2,7 +2,7 @@
 /**
  * Plugin Name: We.Rock.WPvividPro.Ability.Pack
  * Description: WPvivid pro diagnostics and scoped administration through Agent Connector for WP.
- * Version: 0.1.0
+ * Version: 0.1.1
  * Update URI: https://github.com/wirrockendigital/We.Rock.WP.Ability.Packs/releases?q=wrd-wpvivid-pro-ability-pack
  * Tested Target Plugin Version: 2.2.53
  * Requires at least: 7.0

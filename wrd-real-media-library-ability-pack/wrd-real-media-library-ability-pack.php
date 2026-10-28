@@ -2,7 +2,7 @@
 /**
  * Plugin Name: We.Rock.RealMediaLibrary.Ability.Pack
  * Description: Governed folder and media assignment operations for Real Media Library.
- * Version: 0.1.0
+ * Version: 0.1.1
  * Update URI: https://github.com/wirrockendigital/We.Rock.WP.Ability.Packs/releases?q=wrd-real-media-library-ability-pack
  * Tested Target Plugin Version: 4.23.7
  * Requires at least: 7.0

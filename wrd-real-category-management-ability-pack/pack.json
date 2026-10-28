@@ -1,6 +1,6 @@
 {
   "slug": "wrd-real-category-management-ability-pack",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "target_plugin": "real-category-library/index.php",
   "tested_target_plugin_version": "4.3.7",
   "requires_plugin": "agent-connector-for-wp",

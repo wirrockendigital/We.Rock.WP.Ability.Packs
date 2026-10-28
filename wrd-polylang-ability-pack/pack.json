@@ -1,6 +1,6 @@
 {
   "slug": "wrd-polylang-ability-pack",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "target_plugin": "polylang/polylang.php",
   "tested_target_plugin_version": "3.9.1",
   "requires_plugin": "agent-connector-for-wp",

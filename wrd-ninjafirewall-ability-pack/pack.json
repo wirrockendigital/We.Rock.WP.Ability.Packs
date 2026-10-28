@@ -1,6 +1,6 @@
 {
   "slug": "unofficial-abilities-for-ninjafirewall",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "target_plugin": "ninjafirewall/ninjafirewall.php",
   "tested_target_plugin_version": "4.9.2",
   "requires_plugin": "agent-connector-for-wp",

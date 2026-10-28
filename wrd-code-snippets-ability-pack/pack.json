@@ -1,6 +1,6 @@
 {
   "slug": "wrd-code-snippets-ability-pack",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "target_plugin": "code-snippets-pro/code-snippets.php",
   "tested_target_plugin_version": "4.0.0",
   "requires_plugin": "agent-connector-for-wp",

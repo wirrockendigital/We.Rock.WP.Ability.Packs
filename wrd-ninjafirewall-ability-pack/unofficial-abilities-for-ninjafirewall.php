@@ -2,7 +2,7 @@
 /**
  * Plugin Name: We.Rock.NinjaFirewall.Ability.Pack
  * Description: NinjaFirewall diagnostics, scoped settings and rule management through Agent Connector for WP.
- * Version: 0.1.0
+ * Version: 0.1.1
  * Update URI: https://github.com/wirrockendigital/We.Rock.WP.Ability.Packs/releases?q=unofficial-abilities-for-ninjafirewall
  * Tested Target Plugin Version: 4.9.2
  * Requires at least: 7.0

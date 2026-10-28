@@ -2,7 +2,7 @@
 /**
  * Plugin Name: We.Rock.WPvividImgoptimFree.Ability.Pack
  * Description: WPvivid imgoptim-free diagnostics and scoped administration through Agent Connector for WP.
- * Version: 0.1.0
+ * Version: 0.1.1
  * Update URI: https://github.com/wirrockendigital/We.Rock.WP.Ability.Packs/releases?q=wrd-wpvivid-imgoptim-free-ability-pack
  * Tested Target Plugin Version: 0.9.25
  * Requires at least: 7.0

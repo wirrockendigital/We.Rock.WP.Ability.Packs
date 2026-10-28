@@ -35,13 +35,13 @@ Open a pack's page for its available agent tools and usage notes.
    python3 scripts/package_pack.py wrd-real-media-library-ability-pack
    ```
 
-4. In WordPress, open **Plugins → Add New → Upload Plugin**, select `dist/wrd-real-media-library-ability-pack-0.1.0.zip`, and activate it. Replace the example pack path and ZIP name with the pack you chose.
+4. In WordPress, open **Plugins → Add New → Upload Plugin**, select `dist/wrd-real-media-library-ability-pack-0.1.1.zip`, and activate it. Replace the example pack path and ZIP name with the pack you chose.
 
 The pack appears as its own entry under **Plugins → Installed Plugins**, alongside Agent Connector and the target plugin. Check the pack page for any plugin-specific requirements. An [installation guide for AI agents](INSTALL_FOR_AI_AGENTS.md) gives the full verification workflow for automated installation.
 
 ## Update an installed pack
 
-Each pack checks its own published GitHub release. When a newer pack version is available, WordPress shows **Update now** for that pack under **Plugins → Installed Plugins**. To have WordPress install future updates for that pack automatically, choose **Enable auto-updates** in the same row. You can enable this separately for each pack. WordPress performs update checks and installations on its normal schedule.
+Each pack checks its own published GitHub release. When a newer pack version is available, WordPress shows **Update now** for that pack under **Plugins → Installed Plugins**. To have WordPress install future updates for that pack automatically, choose **Enable auto-updates** in the same row. You can enable this separately for each pack when the site's background updater is enabled. WordPress performs update checks and installations on its normal schedule.
 
 The updater is included in the pack ZIP. Install an updater-enabled ZIP once on sites that have an older copy of the pack. GitHub releases contain one ZIP per pack, so updating one pack does not update the other nine packs. Make a verified backup before installing an update.
 

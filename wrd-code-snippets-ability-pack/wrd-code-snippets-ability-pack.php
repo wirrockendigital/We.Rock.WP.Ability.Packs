@@ -2,7 +2,7 @@
 /**
  * Plugin Name: We.Rock.CodeSnippetsPro.Ability.Pack
  * Description: Governed local snippet administration for Code Snippets Pro.
- * Version: 0.1.0
+ * Version: 0.1.1
  * Update URI: https://github.com/wirrockendigital/We.Rock.WP.Ability.Packs/releases?q=wrd-code-snippets-ability-pack
  * Tested Target Plugin Version: 4.0.0
  * Requires at least: 7.0

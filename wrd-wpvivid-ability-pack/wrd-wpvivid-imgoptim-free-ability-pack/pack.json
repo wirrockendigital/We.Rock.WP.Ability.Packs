@@ -1,6 +1,6 @@
 {
   "slug": "wrd-wpvivid-imgoptim-free-ability-pack",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "target_plugin": "wpvivid-imgoptim/wpvivid-imgoptim.php",
   "tested_target_plugin_version": "0.9.25",
   "requires_plugin": "agent-connector-for-wp",

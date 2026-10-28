@@ -2,7 +2,7 @@
 /**
  * Plugin Name: We.Rock.RealCategoryManagement.Ability.Pack
  * Description: Native category trees, ordering, assignments and settings abilities for Agent Connector.
- * Version: 0.1.0
+ * Version: 0.1.1
  * Update URI: https://github.com/wirrockendigital/We.Rock.WP.Ability.Packs/releases?q=wrd-real-category-management-ability-pack
  * Tested Target Plugin Version: 4.3.7
  * Requires at least: 7.0

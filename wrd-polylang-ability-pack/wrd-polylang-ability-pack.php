@@ -2,7 +2,7 @@
 /**
  * Plugin Name: We.Rock.Polylang.Ability.Pack
  * Description: Native Polylang Free language, translation and settings abilities for Agent Connector.
- * Version: 0.1.0
+ * Version: 0.1.1
  * Update URI: https://github.com/wirrockendigital/We.Rock.WP.Ability.Packs/releases?q=wrd-polylang-ability-pack
  * Tested Target Plugin Version: 3.9.1
  * Requires at least: 7.0

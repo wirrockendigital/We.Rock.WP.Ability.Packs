@@ -25,7 +25,7 @@ cd We.Rock.WP.Ability.Packs
 # Example: Code Snippets Pro. Replace the path with the site you administer.
 WP_PATH=/path/to/wordpress
 python3 scripts/package_pack.py wrd-code-snippets-ability-pack
-wp plugin install dist/wrd-code-snippets-ability-pack-0.1.0.zip --activate --path="$WP_PATH"
+wp plugin install dist/wrd-code-snippets-ability-pack-0.1.1.zip --activate --path="$WP_PATH"
 wp plugin get wrd-code-snippets-ability-pack --field=version --path="$WP_PATH"
 ```
 
@@ -33,7 +33,7 @@ Each pack is installed as an ordinary, independently activatable WordPress plugi
 
 For an existing installation, compare the current files, back them up, and update the same plugin directory instead of creating a second copy. Use `wp plugin install <zip> --force --activate` only after confirming the slug and backup. The other packs are optional and remain independently installable.
 
-Each updater-enabled pack uses its own GitHub release tag in the form `<pack-slug>-v<version>` and requires an asset named `<pack-slug>-<version>.zip`. The tag version must match the plugin header and `pack.json`. After a pack is first installed with its updater, WordPress offers later published versions through its normal plugin update screen. The site owner can select **Update now** or **Enable auto-updates** for that individual pack. Verify the installed version and read-only ability execution after either update path.
+Each updater-enabled pack uses its own GitHub release tag in the form `<pack-slug>-v<version>` and requires an asset named `<pack-slug>-<version>.zip`. The tag version must match the plugin header and `pack.json`. After a pack is first installed with its updater, WordPress offers later published versions through its normal plugin update screen. The site owner can select **Update now** or **Enable auto-updates** for that individual pack when the site's background updater is enabled. Verify the installed version and read-only ability execution after either update path.
 
 ## 4. Verify registration and behavior
 

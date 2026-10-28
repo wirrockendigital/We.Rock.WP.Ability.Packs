@@ -2,7 +2,7 @@
 /**
  * Plugin Name: We.Rock.RealCookieBanner.Ability.Pack
  * Description: Governed service and content blocker draft management for Real Cookie Banner.
- * Version: 0.1.0
+ * Version: 0.1.1
  * Update URI: https://github.com/wirrockendigital/We.Rock.WP.Ability.Packs/releases?q=wrd-real-cookie-banner-ability-pack
  * Tested Target Plugin Version: 5.4.0
  * Requires at least: 7.0
