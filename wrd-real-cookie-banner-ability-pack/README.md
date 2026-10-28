@@ -4,7 +4,7 @@ Consent-group inspection and controlled service or content-blocker draft managem
 
 ## Compatibility
 
-Pack version: **0.1.0**. Reviewed target: **Real Cookie Banner 5.3.0** (`real-cookie-banner/index.php`). Requires WordPress 7.0+, PHP 8.1+, the named target plugin, and [Agent Connector for WP](https://github.com/soflyy/agent-connector-for-wp). The target version is informative; native capability checks determine which operations are available.
+Pack version: **0.1.0**. Reviewed target: **Real Cookie Banner 5.4.0** (`real-cookie-banner/index.php`). Requires WordPress 7.0+, PHP 8.1+, the named target plugin, and [Agent Connector for WP](https://github.com/soflyy/agent-connector-for-wp). The target version is informative; native capability checks determine which operations are available.
 
 ## Install
 
@@ -13,6 +13,8 @@ Follow the [AI-agent installation guide](../INSTALL_FOR_AI_AGENTS.md) to check t
 ## Use
 
 Read status, groups, and draft details first. Draft changes require a fresh revision, a reason, and a preview.
+
+On sites with a multilingual plugin, reads remain available. Draft changes are blocked because cross-language synchronization is outside the reviewed write contract.
 
 Available abilities:
 

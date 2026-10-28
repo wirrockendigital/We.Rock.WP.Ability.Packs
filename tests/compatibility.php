@@ -5,7 +5,7 @@ namespace {
     if (PHP_SAPI !== 'cli') { http_response_code(404); exit; }
     define('ABSPATH', __DIR__ . '/'); define('ARRAY_A', 'ARRAY_A');
     $pack=$argv[1]; $scenario=$argv[2];
-    $versions=['ninja'=>['NFW_ENGINE_VERSION','4.9.2'],'snippets'=>['CODE_SNIPPETS_VERSION','4.0.0'],'media'=>['RML_VERSION','4.23.7'],'cookie'=>['RCB_VERSION','5.3.0']];
+    $versions=['ninja'=>['NFW_ENGINE_VERSION','4.9.2'],'snippets'=>['CODE_SNIPPETS_VERSION','4.0.0'],'media'=>['RML_VERSION','4.23.7'],'cookie'=>['RCB_VERSION','5.4.0']];
     if($scenario!=='inactive') define($versions[$pack][0],$scenario==='current'?$versions[$pack][1]:'99.0.0');
     /** Keep all test failures and permission outcomes independent from WordPress. */
     class WP_Error { public function __construct(public string $code,public string $message,public array $data=[]){} }
@@ -87,12 +87,13 @@ namespace {
     $blocked=in_array($scenario,['inactive','missing-read','multisite'],true)||($scenario==='denied'&&$pack!=='ninja');
     if(is_wp_error($result)!==$blocked)throw new \RuntimeException('Unexpected read availability: '.$pack.'/'.$scenario);
     $guard=$pack==='ninja'?$adapter::ready(true):($pack==='cookie'?$adapter::guard($writes[$pack],'service'):$adapter::guard($writes[$pack]));
-    if(is_wp_error($guard)!==($blocked||$scenario==='missing-write'||($pack==='media'&&$scenario==='multilingual')))throw new \RuntimeException('Unexpected write availability: '.$pack.'/'.$scenario);
+    if(is_wp_error($guard)!==($blocked||$scenario==='missing-write'||(in_array($pack,['media','cookie'],true)&&$scenario==='multilingual')))throw new \RuntimeException('Unexpected write availability: '.$pack.'/'.$scenario);
     $status=$pack==='ninja'?$adapter::status([]):$adapter::run('get-status',[]);
     if(!is_wp_error($status)){
         if(($status['version_policy']??null)!=='informational')throw new \RuntimeException('Version is not informational');
         if($status['source_version_matches']!==($scenario==='current'))throw new \RuntimeException('Wrong source metadata');
         if($pack==='media'&&$scenario==='multilingual'&&(!$status['supported']||$status['writes_supported']))throw new \RuntimeException('Multilingual media status is wrong');
+        if($pack==='cookie'&&$scenario==='multilingual'&&(!$status['supported']||$status['writes_supported']))throw new \RuntimeException('Multilingual cookie status is wrong');
     }
     echo 'PASS: '.$pack.'/'.$scenario."\n";
 }

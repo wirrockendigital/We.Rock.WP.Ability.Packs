@@ -1,13 +1,14 @@
 <?php
 /**
- * Plugin Name: WRD WPvivid pro Ability Pack
+ * Plugin Name: We.Rock.WPvividPro.Ability.Pack
  * Description: WPvivid pro diagnostics and scoped administration through Agent Connector for WP.
  * Version: 0.1.0
  * Tested Target Plugin Version: 2.2.53
  * Requires at least: 7.0
  * Requires PHP: 8.1
  * Requires Plugins: agent-connector-for-wp, wpvivid-backup-pro
- * Author: We.Rock
+ * Author: wir.rocken.digital
+ * Author URI: https://wir.rocken.digital
  * License: GPL-3.0-or-later
  * Agent Connector: Ability Pack
  * Agent Connector Target: wpvivid-backup-pro/wpvivid-backup-pro.php

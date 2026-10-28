@@ -1,13 +1,14 @@
 <?php
 /**
- * Plugin Name: WRD WPvivid imgoptim-free Ability Pack
+ * Plugin Name: We.Rock.WPvividImgoptimFree.Ability.Pack
  * Description: WPvivid imgoptim-free diagnostics and scoped administration through Agent Connector for WP.
  * Version: 0.1.0
  * Tested Target Plugin Version: 0.9.25
  * Requires at least: 7.0
  * Requires PHP: 8.1
  * Requires Plugins: agent-connector-for-wp, wpvivid-imgoptim
- * Author: We.Rock
+ * Author: wir.rocken.digital
+ * Author URI: https://wir.rocken.digital
  * License: GPL-3.0-or-later
  * Agent Connector: Ability Pack
  * Agent Connector Target: wpvivid-imgoptim/wpvivid-imgoptim.php

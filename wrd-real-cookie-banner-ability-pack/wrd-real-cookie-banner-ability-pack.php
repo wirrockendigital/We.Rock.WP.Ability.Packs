@@ -1,13 +1,14 @@
 <?php
 /**
- * Plugin Name: WRD Real Cookie Banner Ability Pack
+ * Plugin Name: We.Rock.RealCookieBanner.Ability.Pack
  * Description: Governed service and content blocker draft management for Real Cookie Banner.
  * Version: 0.1.0
- * Tested Target Plugin Version: 5.3.0
+ * Tested Target Plugin Version: 5.4.0
  * Requires at least: 7.0
  * Requires PHP: 8.1
  * Requires Plugins: agent-connector-for-wp, real-cookie-banner
- * Author: We.Rock
+ * Author: wir.rocken.digital
+ * Author URI: https://wir.rocken.digital
  * License: GPL-3.0-or-later
  * Agent Connector: Ability Pack
  * Agent Connector Target: real-cookie-banner/index.php

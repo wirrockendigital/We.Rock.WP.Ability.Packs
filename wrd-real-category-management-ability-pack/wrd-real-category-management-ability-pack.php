@@ -1,13 +1,14 @@
 <?php
 /**
- * Plugin Name: WRD Real Category Management Ability Pack
+ * Plugin Name: We.Rock.RealCategoryManagement.Ability.Pack
  * Description: Native category trees, ordering, assignments and settings abilities for Agent Connector.
  * Version: 0.1.0
  * Tested Target Plugin Version: 4.3.7
  * Requires at least: 7.0
  * Requires PHP: 8.1
  * Requires Plugins: agent-connector-for-wp, real-category-library
- * Author: We.Rock
+ * Author: wir.rocken.digital
+ * Author URI: https://wir.rocken.digital
  * License: GPL-3.0-or-later
  * Agent Connector: Ability Pack
  * Agent Connector Target: real-category-library/index.php

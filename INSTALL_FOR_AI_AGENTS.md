@@ -29,6 +29,8 @@ wp plugin install dist/wrd-code-snippets-ability-pack-0.1.0.zip --activate --pat
 wp plugin get wrd-code-snippets-ability-pack --field=version --path="$WP_PATH"
 ```
 
+Each pack is installed as an ordinary, independently activatable WordPress plugin. In **Plugins → Installed Plugins**, its row should show `We.Rock.<PluginName>.Ability.Pack`, its pack version, and `wir.rocken.digital` as author. WordPress localizes the byline, so a German administration screen displays “Von wir.rocken.digital”. The target plugin and Agent Connector for WP have their own rows.
+
 For an existing installation, compare the current files, back them up, and update the same plugin directory instead of creating a second copy. Use `wp plugin install <zip> --force --activate` only after confirming the slug and backup. The other packs are optional and remain independently installable.
 
 ## 4. Verify registration and behavior

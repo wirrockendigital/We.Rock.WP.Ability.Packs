@@ -1,13 +1,14 @@
 <?php
 /**
- * Plugin Name: WRD WPvivid backup Ability Pack
+ * Plugin Name: We.Rock.WPvividBackup.Ability.Pack
  * Description: WPvivid backup diagnostics and scoped administration through Agent Connector for WP.
  * Version: 0.1.0
  * Tested Target Plugin Version: 0.9.136
  * Requires at least: 7.0
  * Requires PHP: 8.1
  * Requires Plugins: agent-connector-for-wp, wpvivid-backuprestore
- * Author: We.Rock
+ * Author: wir.rocken.digital
+ * Author URI: https://wir.rocken.digital
  * License: GPL-3.0-or-later
  * Agent Connector: Ability Pack
  * Agent Connector Target: wpvivid-backuprestore/wpvivid-backuprestore.php

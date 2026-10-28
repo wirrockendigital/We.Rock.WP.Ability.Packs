@@ -14,7 +14,7 @@ Each pack has its **own version**, starting at `0.1.0`. The target version below
 | [Code Snippets Pro](wrd-code-snippets-ability-pack/) | Code Snippets Pro 4.0.0 | 10 |
 | [Polylang Free](wrd-polylang-ability-pack/) | Polylang Free 3.9.1 | 14 |
 | [Real Category Management](wrd-real-category-management-ability-pack/) | Real Category Management 4.3.7 | 11 |
-| [Real Cookie Banner](wrd-real-cookie-banner-ability-pack/) | Real Cookie Banner 5.3.0 | 10 |
+| [Real Cookie Banner](wrd-real-cookie-banner-ability-pack/) | Real Cookie Banner 5.4.0 | 10 |
 | [Real Media Library](wrd-real-media-library-ability-pack/) | Real Media Library 4.23.7 | 8 |
 | [WPvivid Backup](wrd-wpvivid-ability-pack/wrd-wpvivid-backup-ability-pack/) | WPvivid Backup 0.9.136 | 9 |
 | [WPvivid Pro](wrd-wpvivid-ability-pack/wrd-wpvivid-pro-ability-pack/) | WPvivid Pro 2.2.53 | 9 |
@@ -26,6 +26,8 @@ The WordPress plugin header and `pack.json` inside each pack carry its independe
 ## Install
 
 Use WordPress 7.0+, PHP 8.1+, the target plugin, and [Agent Connector for WP](https://github.com/soflyy/agent-connector-for-wp/releases). Package and activate one pack at a time. The [installation guide for AI agents](INSTALL_FOR_AI_AGENTS.md) covers prerequisite checks, ZIP creation, MCP discovery, and verification.
+
+Each pack appears as a separate entry under **Plugins → Installed Plugins** with its `We.Rock.<PluginName>.Ability.Pack` display name, pack version, and `wir.rocken.digital` author.
 
 ## Use
 

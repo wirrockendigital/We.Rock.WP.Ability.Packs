@@ -21,8 +21,9 @@ final class Adapter
         if(!defined('RCB_VERSION'))return self::error('target','Active Real Cookie Banner is required.');
         if(is_multisite())return self::error('multisite','Only single-site WordPress is supported.');
         if(!current_user_can('manage_real_cookie_banner'))return self::error('permission','Native Real Cookie Banner management capability is required.');
-        // Multilingual synchronization can affect other records and is not part of this adapter.
-        if(defined('ICL_SITEPRESS_VERSION') || function_exists('pll_current_language'))return self::error('multilingual','Multilingual synchronization requires native administration.');
+        // Multilingual synchronization can affect writes, while native reads remain safe.
+        if(in_array($operation,['create-draft','update-draft','trash-draft','restore-draft'],true) &&
+            (defined('ICL_SITEPRESS_VERSION') || function_exists('pll_current_language')))return self::error('multilingual','Multilingual draft changes require native administration.');
         if($operation==='list-groups'&&!taxonomy_exists('rcb-cookie-group'))return self::error('native_api','Native service-group taxonomy unavailable.');
         if($kind!==null) {
             $type=self::TYPES[$kind]??null;
@@ -130,7 +131,7 @@ final class Adapter
     /** Dispatch reads without requesting consent records or native revision generation. */
     public static function run(string $operation,array $a)
     {
-        if($operation==='get-status')return ['version'=>defined('RCB_VERSION')?RCB_VERSION:null,'source_version'=>'5.3.0','source_version_matches'=>defined('RCB_VERSION')&&RCB_VERSION==='5.3.0','version_policy'=>'informational','supported'=>self::guard()===null,'write_scope'=>'service and blocker drafts'];
+        if($operation==='get-status')return ['version'=>defined('RCB_VERSION')?RCB_VERSION:null,'source_version'=>'5.4.0','source_version_matches'=>defined('RCB_VERSION')&&RCB_VERSION==='5.4.0','version_policy'=>'informational','supported'=>self::guard()===null,'writes_supported'=>self::guard('create-draft','service')===null,'write_scope'=>'service and blocker drafts'];
         if($e=self::guard($operation,$a['kind']??null))return $e;
         if($operation==='get-settings') {
             $out=[];foreach(self::SETTINGS as $key)$out[$key]=get_option($key,null);

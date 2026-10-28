@@ -1,13 +1,14 @@
 <?php
 /**
- * Plugin Name: WRD Polylang Ability Pack
+ * Plugin Name: We.Rock.Polylang.Ability.Pack
  * Description: Native Polylang Free language, translation and settings abilities for Agent Connector.
  * Version: 0.1.0
  * Tested Target Plugin Version: 3.9.1
  * Requires at least: 7.0
  * Requires PHP: 8.1
  * Requires Plugins: agent-connector-for-wp, polylang
- * Author: We.Rock
+ * Author: wir.rocken.digital
+ * Author URI: https://wir.rocken.digital
  * License: GPL-3.0-or-later
  * Agent Connector: Ability Pack
  * Agent Connector Target: polylang/polylang.php

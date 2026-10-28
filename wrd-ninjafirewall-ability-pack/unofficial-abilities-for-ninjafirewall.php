@@ -1,13 +1,14 @@
 <?php
 /**
- * Plugin Name: Unofficial Abilities for NinjaFirewall
+ * Plugin Name: We.Rock.NinjaFirewall.Ability.Pack
  * Description: NinjaFirewall diagnostics, scoped settings and rule management through Agent Connector for WP.
  * Version: 0.1.0
  * Tested Target Plugin Version: 4.9.2
  * Requires at least: 7.0
  * Requires PHP: 8.1
  * Requires Plugins: agent-connector-for-wp, ninjafirewall
- * Author: We.Rock
+ * Author: wir.rocken.digital
+ * Author URI: https://wir.rocken.digital
  * License: GPL-3.0-or-later
  * Agent Connector: Ability Pack
  * Agent Connector Target: ninjafirewall/ninjafirewall.php

@@ -10,6 +10,18 @@ PACKS = [path for path in ROOT.glob("wrd-*-ability-pack") if path.name != "wrd-w
 PACKS += list(ROOT.glob("wrd-wpvivid-ability-pack/wrd-*-ability-pack"))
 assert len(PACKS) == 10, "Expected ten independent packs"
 slugs = set()
+DISPLAY_NAMES = {
+    "wrd-ninjafirewall-ability-pack": "NinjaFirewall",
+    "wrd-code-snippets-ability-pack": "CodeSnippetsPro",
+    "wrd-polylang-ability-pack": "Polylang",
+    "wrd-real-category-management-ability-pack": "RealCategoryManagement",
+    "wrd-real-cookie-banner-ability-pack": "RealCookieBanner",
+    "wrd-real-media-library-ability-pack": "RealMediaLibrary",
+    "wrd-wpvivid-backup-ability-pack": "WPvividBackup",
+    "wrd-wpvivid-pro-ability-pack": "WPvividPro",
+    "wrd-wpvivid-staging-ability-pack": "WPvividStaging",
+    "wrd-wpvivid-imgoptim-free-ability-pack": "WPvividImgoptimFree",
+}
 
 
 def header(source: str, name: str) -> str:
@@ -25,6 +37,10 @@ for pack in PACKS:
     assert len(main_files) == 1, pack
     source = main_files[0].read_text()
     manifest = json.loads((pack / "pack.json").read_text())
+    # WordPress builds the Plugins list name, version, and byline from these fields.
+    assert header(source, "Plugin Name") == f"We.Rock.{DISPLAY_NAMES[pack.name]}.Ability.Pack", pack
+    assert header(source, "Author") == "wir.rocken.digital", pack
+    assert header(source, "Author URI") == "https://wir.rocken.digital", pack
     assert manifest["version"] == header(source, "Version") == "0.1.0", pack
     assert manifest["target_plugin"] == header(source, "Agent Connector Target"), pack
     assert manifest["tested_target_plugin_version"] == header(source, "Tested Target Plugin Version"), pack

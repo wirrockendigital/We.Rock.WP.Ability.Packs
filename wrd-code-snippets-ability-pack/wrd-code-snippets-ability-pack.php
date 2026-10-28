@@ -1,13 +1,14 @@
 <?php
 /**
- * Plugin Name: WRD Code Snippets Ability Pack
+ * Plugin Name: We.Rock.CodeSnippetsPro.Ability.Pack
  * Description: Governed local snippet administration for Code Snippets Pro.
  * Version: 0.1.0
  * Tested Target Plugin Version: 4.0.0
  * Requires at least: 7.0
  * Requires PHP: 8.1
  * Requires Plugins: agent-connector-for-wp, code-snippets-pro
- * Author: We.Rock
+ * Author: wir.rocken.digital
+ * Author URI: https://wir.rocken.digital
  * License: GPL-3.0-or-later
  * Agent Connector: Ability Pack
  * Agent Connector Target: code-snippets-pro/code-snippets.php
