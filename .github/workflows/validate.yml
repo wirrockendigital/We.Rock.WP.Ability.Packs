@@ -28,6 +28,7 @@ jobs:
         run: |
           python3 tests/validate-compatibility.py
           php wrd-ninjafirewall-ability-pack/tests/behavior.php
+          .venv/bin/python wrd-litespeed-cache-ability-pack/tests/validate.py
           .venv/bin/python wrd-code-snippets-ability-pack/tests/validate.py
           .venv/bin/python wrd-real-cookie-banner-ability-pack/tests/validate.py
           .venv/bin/python wrd-real-media-library-ability-pack/tests/validate.py

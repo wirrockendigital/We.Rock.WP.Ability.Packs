@@ -8,9 +8,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 PACKS = [path for path in ROOT.glob("wrd-*-ability-pack") if path.name != "wrd-wpvivid-ability-pack"]
 PACKS += list(ROOT.glob("wrd-wpvivid-ability-pack/wrd-*-ability-pack"))
-assert len(PACKS) == 10, "Expected ten independent packs"
+assert len(PACKS) == 11, "Expected eleven independent packs"
 slugs = set()
 DISPLAY_NAMES = {
+    "wrd-litespeed-cache-ability-pack": "LiteSpeedCache",
     "wrd-ninjafirewall-ability-pack": "NinjaFirewall",
     "wrd-code-snippets-ability-pack": "CodeSnippetsPro",
     "wrd-polylang-ability-pack": "Polylang",

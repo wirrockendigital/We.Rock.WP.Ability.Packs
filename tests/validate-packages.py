@@ -1,4 +1,4 @@
-"""Check that all ten installable ZIPs contain only runtime and user files."""
+"""Check that all eleven installable ZIPs contain only runtime and user files."""
 
 import json
 import subprocess
@@ -10,7 +10,7 @@ from zipfile import ZipFile
 ROOT = Path(__file__).resolve().parents[1]
 PACKS = [path for path in ROOT.glob("wrd-*-ability-pack") if path.name != "wrd-wpvivid-ability-pack"]
 PACKS += list(ROOT.glob("wrd-wpvivid-ability-pack/wrd-*-ability-pack"))
-assert len(PACKS) == 10
+assert len(PACKS) == 11
 assert len({(pack / "includes/github-updater.php").read_bytes() for pack in PACKS}) == 1, "Updater copies diverged"
 
 with tempfile.TemporaryDirectory() as temporary:
@@ -33,4 +33,4 @@ with tempfile.TemporaryDirectory() as temporary:
             assert len(names) >= 5, pack
             assert zipped.testzip() is None, pack
 
-print("PASS: ten installable ZIPs with isolated roots and no development tests")
+print("PASS: eleven installable ZIPs with isolated roots and no development tests")

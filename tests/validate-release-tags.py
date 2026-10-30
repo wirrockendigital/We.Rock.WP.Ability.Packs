@@ -26,4 +26,4 @@ invalid = subprocess.run(
 )
 assert invalid.returncode != 0 and "must match" in invalid.stderr
 
-print("PASS: ten isolated release tags and mismatched version rejection")
+print("PASS: eleven isolated release tags and mismatched version rejection")

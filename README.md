@@ -10,6 +10,7 @@ These are third-party integrations. They are not official products of Soflyy, Ox
 
 | Pack | What your AI agent can do |
 |---|---|
+| [LiteSpeed Cache](wrd-litespeed-cache-ability-pack/) | Inspect cache status and settings, preview native configuration changes, and invalidate page caches for URLs, posts, or the site. |
 | [NinjaFirewall](wrd-ninjafirewall-ability-pack/) | Check protection status, review redacted incidents and statistics, inspect selected settings and rules, and preview supported changes. |
 | [Code Snippets Pro](wrd-code-snippets-ability-pack/) | Find and review snippets, validate code, prepare inactive snippets, and manage their activation and lifecycle. |
 | [Polylang Free](wrd-polylang-ability-pack/) | Inspect languages and settings, manage content language assignments and translation links, and work with registered string translations. |
@@ -43,7 +44,7 @@ The pack appears as its own entry under **Plugins → Installed Plugins**, along
 
 Each pack checks its own published GitHub release. When a newer pack version is available, WordPress shows **Update now** for that pack under **Plugins → Installed Plugins**. To have WordPress install future updates for that pack automatically, choose **Enable auto-updates** in the same row. You can enable this separately for each pack when the site's background updater is enabled. WordPress performs update checks and installations on its normal schedule.
 
-The updater is included in the pack ZIP. Install an updater-enabled ZIP once on sites that have an older copy of the pack. GitHub releases contain one ZIP per pack, so updating one pack does not update the other nine packs. Make a verified backup before installing an update.
+The updater is included in the pack ZIP. Install an updater-enabled ZIP once on sites that have an older copy of the pack. GitHub releases contain one ZIP per pack, so updating one pack does not update the other packs. Make a verified backup before installing an update.
 
 ## Use with an AI agent
 
