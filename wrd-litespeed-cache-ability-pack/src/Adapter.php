@@ -12,13 +12,15 @@ final class Adapter {
     }
     /** Explicitly enumerate reviewed, credential-free settings and their accepted types. */
     public static function settings_schema(): array {
-        $properties = [];
+        $properties = Settings::properties();
         foreach (['cache','cache-priv','cache-commenter','cache-rest','cache-page_login','cache-mobile','cache-browser','guest','guest_optm','optm-css_min','optm-css_comb','optm-js_min','optm-js_comb','optm-html_min','optm-qs_rm','optm-emoji_rm','optm-ggfonts_rm','media-lazy','media-iframe_lazy','media-add_missing_sizes','purge-upgrade'] as $key) {
             $properties[$key] = ['type'=>'boolean'];
         }
         foreach (['cache-ttl_pub','cache-ttl_frontpage','cache-ttl_feed','cache-ttl_rest','cache-ttl_browser'] as $key) {
             $properties[$key] = ['type'=>'integer','minimum'=>30,'maximum'=>31557600];
         }
+        // Native feed and REST TTLs accept zero to disable caching.
+        foreach (['cache-ttl_feed','cache-ttl_rest'] as $key) $properties[$key]['minimum']=0;
         $properties['cache-ttl_priv'] = ['type'=>'integer','minimum'=>60,'maximum'=>3600];
         $properties['optm-js_defer'] = ['type'=>'integer','enum'=>[0,1,2],'description'=>'0: off; 1: deferred; 2: delayed until interaction.'];
         foreach (['cache-exc','cache-exc_qs','optm-css_exc','optm-js_exc','optm-js_defer_exc','optm-exc','media-lazy_exc','media-lazy_cls_exc','media-lazy_uri_exc'] as $key) {
@@ -29,6 +31,7 @@ final class Adapter {
     /** Inspect public native methods without treating a version difference as incompatibility. */
     public static function available(string $op): bool {
         if (!defined('LSCWP_V')) return false;
+        if (Operations::handles($op)) return Operations::available($op);
         $methods = match ($op) {
             'get-settings' => [[Conf::class,'cls'],[Conf::class,'conf']],
             'update-settings' => [[Conf::class,'cls'],[Conf::class,'conf'],[Conf::class,'get_option'],[Conf::class,'update_confs']],
@@ -41,7 +44,7 @@ final class Adapter {
         return true;
     }
     /** Read only allowlisted values; revision includes all persisted config without exposing it. */
-    private static function settings(): array {
+    public static function settings(): array {
         $conf = Conf::cls(); $values = []; $original = [];
         foreach (self::settings_schema()['properties'] as $key=>$schema) {
             $value = $conf->conf($key);
@@ -73,12 +76,13 @@ final class Adapter {
         if ($op === 'get-status') {
             $operations = [];
             foreach (['get-settings','update-settings','purge-cache'] as $name) $operations[$name] = !is_multisite() && self::available($name);
-            return ['source_version'=>defined('LSCWP_V')?LSCWP_V:null,'reviewed_source_version'=>'7.9.2','multisite'=>is_multisite(),'operations'=>$operations,'cache_enabled_for_request'=>defined('LITESPEED_ON') && (bool)LITESPEED_ON,'cache_allowed_for_request'=>defined('LITESPEED_ALLOWED') && (bool)LITESPEED_ALLOWED,'cache_signal_note'=>'Request-local flags, not a frontend cache hit test; CLI and HTTP contexts can differ.'];
+            return ['maintenance'=>Operations::catalog_status(),'source_version'=>defined('LSCWP_V')?LSCWP_V:null,'reviewed_source_version'=>'7.9.2','multisite'=>is_multisite(),'operations'=>$operations,'cache_enabled_for_request'=>defined('LITESPEED_ON') && (bool)LITESPEED_ON,'cache_allowed_for_request'=>defined('LITESPEED_ALLOWED') && (bool)LITESPEED_ALLOWED,'cache_signal_note'=>'Request-local flags, not a frontend cache hit test; CLI and HTTP contexts can differ.'];
         }
         if ($op === 'get-settings-schema') return ['schema'=>self::settings_schema()];
         if (is_multisite()) return self::error('scope','Multisite operations have not been validated.');
         if (!self::available($op)) return self::error('unavailable','Required native methods are unavailable.');
         if ($op === 'get-settings') return self::settings();
+        if (Operations::handles($op)) return Operations::run($op,$args);
         if (trim($args['reason']) === '') return self::error('reason','A meaningful reason is required.');
         if ($op === 'purge-cache') return self::purge($args);
         // Serialize pack writers and always recheck persistent state under the advisory lock.
@@ -88,6 +92,10 @@ final class Adapter {
         try {
             $before = self::settings();
             if (!hash_equals($before['revision'],$args['expected_revision'])) return self::error('revision','Settings changed. Read fresh settings and preview again.');
+            // Protect configuration switches that can delete originals or broaden cache exposure.
+            $risk = ['img_optm-rm_bkup','media-auto_rescale_ori','cache-force_pub_uri','debug','debug-disable_all','crawler','img_optm-auto'];
+            if (!($args['dry_run']??true) && array_intersect(array_keys($args['changes']),$risk) && !($args['acknowledge_high_impact']??false)) return self::error('acknowledgement','acknowledge_high_impact=true is required for these settings; review deletion, logging, public caching or external-job effects.');
+            if (isset($args['changes']['crawler-sitemap']) && $args['changes']['crawler-sitemap'] !== '' && !Operations::sitemap_urls_valid($args['changes']['crawler-sitemap'])) return self::error('url','The crawler sitemap must use HTTPS on this site origin.');
             $delta = [];
             foreach ($args['changes'] as $key=>$value) {
                 if (!array_key_exists($key,$before['settings'])) return self::error('unavailable','A requested setting is not available in this plugin.');

@@ -7,7 +7,7 @@ from jsonschema import Draft4Validator
 ROOT = Path(__file__).resolve().parent
 # Export actual registered definitions rather than copying schemas into the validator.
 definitions = json.loads(subprocess.check_output(['php', str(ROOT / 'behavior.php'), 'export']))
-assert len(definitions) == 5
+assert len(definitions) == 13
 for definition in definitions.values():
     Draft4Validator.check_schema(definition['input_schema'])
     Draft4Validator.check_schema(definition['output_schema'])
@@ -22,4 +22,4 @@ for changes in [{}, {'api_key': 'private'}, {'cache': 'false'}, {'optm-js_defer'
 for scenario in ['current', 'future', 'inactive']:
     subprocess.run(['php', str(ROOT / 'behavior.php'), scenario], check=True)
 subprocess.run(['php', str(ROOT / 'missing-native.php')], check=True)
-print('PASS: five public schemas and independent input fixtures')
+print('PASS: thirteen public schemas and independent input fixtures')

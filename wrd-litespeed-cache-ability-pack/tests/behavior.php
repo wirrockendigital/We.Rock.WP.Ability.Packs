@@ -20,17 +20,40 @@ namespace LiteSpeed {
     /** Record exact native dispatch so previews and rejected inputs cannot silently mutate. */
     class Purge {
         public static array $calls=[];
+        public static function get_summary(): array {return [];}
+        public static function purge_all(): void {self::$calls[]=['all'];}
         public static function cls(): self {return new self();}
         public function purge_url($url): bool {self::$calls[]=['url',$url];return true;}
         public function purge_post($id): void {self::$calls[]=['post',$id];}
         public static function purge_all_lscache(): void {self::$calls[]=['site'];}
     }
 }
+namespace LiteSpeed {
+    /** Cloud fixture deliberately includes secrets that must never reach a tool response. */
+    class DB_Optm {
+        /** Deterministic candidate counts let the database preview exercise its revision path. */
+        public static function cls(): self {return new self();}
+        public function db_count($type): int {return $type==='revision'?4:0;}
+        public function handler_clean_db_cli($type): bool {throw new \RuntimeException('Cleanup must not run in these preview tests');}
+    }
+    class Cloud {
+        public static int $calls=0;
+        public static bool $fail=false;
+        public static function cls(): self {return new self();}
+        public static function get_summary(): array {return ['sk_b64'=>'private-secret','qc_activated'=>1,'access_token'=>'private-secret','last_request'=>123,'usage.ccss'=>['quota'=>100,'token'=>'private-secret']];}
+        public function sync_usage(): mixed {self::$calls++;return self::$fail?false:['private'=>'private-secret'];}
+        public function clear_cloud(): void {self::$calls++;}
+    }
+}
 namespace {
     define('ABSPATH',__DIR__);define('ARRAY_A','ARRAY_A');define('DB_NAME','test');
     $scenario=$argv[1]??'current';
     if ($scenario!=='inactive') define('LSCWP_V',$scenario==='future'?'99.0.0':'7.9.2');
-    $allowed=true;$multisite=false;
+    $allowed=true;$multisite=false;$receipts=[];
+    function get_current_user_id(): int {return 1;}
+    function get_option($key,$default=false): mixed {return $GLOBALS['receipts'][$key]??$default;}
+    function add_option($key,$value,$deprecated='',$autoload=false): bool {if(isset($GLOBALS['receipts'][$key]))return false;$GLOBALS['receipts'][$key]=$value;return true;}
+    function update_option($key,$value,$autoload=false): bool {$GLOBALS['receipts'][$key]=$value;return true;}
     /** Minimal host error type, without native exception text. */
     class WP_Error {public function __construct(public string $code,public string $message) {}}
     function is_wp_error($v): bool {return $v instanceof WP_Error;}
@@ -69,7 +92,7 @@ namespace {
     }
     /** Represent persistent rows and the advisory-lock result independently. */
     class Database {
-        public string $options='wp_options';public string $prefix='wp_';public string $last_error='';public bool $busy=false;
+        public string $posts='wp_posts';public string $postmeta='wp_postmeta';public string $comments='wp_comments';public string $commentmeta='wp_commentmeta';public string $options='wp_options';public string $prefix='wp_';public string $last_error='';public bool $busy=false;
         public array $extra=[];
         public function prepare($sql,...$args): string {return $sql;}
         public function esc_like($v): string {return $v;}
@@ -88,7 +111,7 @@ namespace {
         foreach ($definitions as &$def) {unset($def['execute_callback'],$def['summarize']);}unset($def);
         echo json_encode($definitions);exit;
     }
-    check(count(ACFW_Pack::definitions())===5,'registration');
+    check(count(ACFW_Pack::definitions())===13,'registration');
     $allowed=false;check(is_wp_error(run('get-status')),'permission gate');$allowed=true;
     $status=run('get-status');
     if ($scenario==='inactive') {check(!$status['operations']['get-settings'],'inactive availability');check(is_wp_error(run('get-settings')),'inactive read blocked');echo "PASS inactive\n";exit;}
@@ -119,5 +142,36 @@ namespace {
     check(is_wp_error(run('purge-cache',['reason'=>'extra target','scope'=>'site','post_ids'=>[7]])),'ambiguous site scope');
     run('purge-cache',['reason'=>'site test','scope'=>'site','dry_run'=>false,'acknowledge_cache_rebuild'=>true]);
     check(end(\LiteSpeed\Purge::$calls)===['site'],'site native dispatch');
+    check(\WeRock\LiteSpeedAbilities\Operations::sitemap_urls_valid("https://example.test/sitemap.xml\r\nhttps://example.test/posts.xml"),'native multiline sitemap');
+    check(!\WeRock\LiteSpeedAbilities\Operations::sitemap_urls_valid("https://example.test/sitemap.xml\nhttps://other.test/sitemap.xml"),'sitemap origin boundary');
+    // Exercise native maintenance replay protection, redaction and uncertain outcomes.
+    $cloud=run('get-component-status',['component'=>'cloud']);
+    check(!str_contains(json_encode($cloud),'private-secret')&&$cloud['activated'],'redacted cloud status');
+    $maintenance=['reason'=>'refresh cloud status','action'=>'sync-cloud-usage','expected_revision'=>$cloud['revision'],'request_id'=>'12345678-1234-4234-8234-123456789abc'];
+    check(run('run-maintenance',$maintenance)['requested']===false&&count($receipts)===0,'maintenance preview has no receipt or write');
+    check(is_wp_error(run('run-maintenance',$maintenance+['dry_run'=>false])),'exact action acknowledgement');
+    $applied=run('run-maintenance',$maintenance+['dry_run'=>false,'confirm_action'=>'sync-cloud-usage']);
+    check($applied['receipt']['state']==='native_returned'&&\LiteSpeed\Cloud::$calls===1,'native maintenance call');
+    check(!str_contains(json_encode($applied),'private-secret'),'native return redacted');
+    $replay=run('run-maintenance',$maintenance+['dry_run'=>false,'confirm_action'=>'sync-cloud-usage']);
+    check($replay['replayed']&&\LiteSpeed\Cloud::$calls===1,'idempotent receipt replay');
+    $other=$maintenance;$other['action']='clear-cloud-nodes';check(is_wp_error(run('run-maintenance',$other)),'request ID collision');
+    $other=$maintenance;$other['request_id']='22345678-1234-4234-8234-123456789abc';$other['expected_revision']=str_repeat('0',64);check(is_wp_error(run('run-maintenance',$other)),'maintenance stale revision');
+    $other=$maintenance;$other['request_id']='32345678-1234-4234-8234-123456789abc';\LiteSpeed\Cloud::$fail=true;
+    $failed=run('run-maintenance',$other+['dry_run'=>false,'confirm_action'=>'sync-cloud-usage']);
+    check($failed['receipt']['state']==='needs_reconciliation','native uncertainty receipt');
+    $receipt=run('get-operation-receipt',['request_id'=>$other['request_id']]);check($receipt['found'],'read receipt');
+    $cache=run('get-component-status',['component'=>'cache']);
+    $flush=['reason'=>'flush test','action'=>'purge-all','expected_revision'=>$cache['revision'],'request_id'=>'42345678-1234-4234-8234-123456789abc','dry_run'=>false,'confirm_action'=>'purge-all'];
+    check(is_wp_error(run('run-maintenance',$flush)),'shared backend acknowledgement');
+    $db=run('get-database-status');check($db['counts']['revision']===4,'native candidate count');
+    $cleanup=['reason'=>'preview database cleanup','kind'=>'revision','expected_revision'=>$db['revision'],'request_id'=>'52345678-1234-4234-8234-123456789abc'];
+    $preview=\WeRock\LiteSpeedAbilities\Operations::run('cleanup-database',$cleanup);
+    check(!$preview['requested']&&$preview['required_confirmation']==='database:revision','database preview');
+    $rejected=\WeRock\LiteSpeedAbilities\Operations::run('cleanup-database',$cleanup+['dry_run'=>false,'confirm_action'=>'database:revision']);
+    check(is_wp_error($rejected)&&$rejected->code==='wrd_litespeed_backup','backup gate before native deletion');
+    check(is_wp_error(\WeRock\LiteSpeedAbilities\NativeProcess::run('arbitrary-shell',[])),'closed process dispatcher');
+    $high=['reason'=>'high impact test','changes'=>['img_optm-rm_bkup'=>true],'expected_revision'=>run('get-settings')['revision'],'dry_run'=>false];
+    check(is_wp_error(run('update-settings',$high)),'high impact setting acknowledgement');
     echo "PASS $scenario: permission, validation, revision, preview, native writes and purges\n";
 }
